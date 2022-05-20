@@ -52,6 +52,7 @@ describe('headMain', () => {
 
   it('should return lines of given file', () => {
     const mockReadFileSync = mock('a.txt', 'hello');
-    assert.strictEqual(headMain(mockReadFileSync, 'a.txt'), 'hello');
+    assert.strictEqual(headMain(mockReadFileSync, ['-n', '10', 'a.txt']),
+      'hello');
   });
 });
