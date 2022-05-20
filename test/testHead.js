@@ -5,6 +5,7 @@ describe('head', () => {
   it('Should return a line', () => {
     assert.strictEqual(head('hello'), 'hello');
     assert.strictEqual(head('bye'), 'bye');
+    assert.strictEqual(head(''), '');
   });
 
   it('Should return multiple lines', () => {

@@ -1,10 +1,13 @@
 **TODO :**
-- [ ] Implement head for multiple lines
-- write tests for `splitByNewLine` and `joinByNewLine`
-- [ ] Make `head` work for file content
+- [ ] ~~write tests for `splitByNewLine` and `joinByNewLine`~~
 - [ ] Make `head file` work
+- [ ] Make `head n file` work (-n)
+ 
 
 **Done :**
+- [x] Extract function slice 
+- [x] Make `head` work for file content
+- [x] Implement head for multiple lines
 - [x] Refactor head function
   - [x] Make separate functions for split and join
 - [X] Implement head for more than 10 lines

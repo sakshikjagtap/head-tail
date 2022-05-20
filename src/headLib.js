@@ -1,11 +1,13 @@
-const splitByNewLine = content => content.split('\n');
+const splitLines = content => content.split('\n');
 
-const joinByNewLine = (lines) => lines.join('\n');
+const joinLines = lines => lines.join('\n');
+
+const firstTenLines = lines => lines.slice(0, 10);
 
 const head = (content) => {
-  const lines = splitByNewLine(content);
-  const firstLines = lines.slice(0, 10);
-  return joinByNewLine(firstLines);
+  const lines = splitLines(content);
+  const firstLines = firstTenLines(lines);
+  return joinLines(firstLines);
 };
 
 exports.head = head;
