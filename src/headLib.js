@@ -4,9 +4,9 @@ const linesUptoCount = (lines, count) => {
   return lines.slice(0, count);
 };
 
-const head = (content, count) => {
+const head = (content, { numOfLines, numOfBytes }) => {
   const lines = splitLines(content);
-  const firstLines = linesUptoCount(lines, count);
+  const firstLines = linesUptoCount(lines, numOfLines);
   return joinLines(firstLines);
 };
 

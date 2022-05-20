@@ -9,25 +9,29 @@ describe('linesUptoCount', () => {
 
 describe('head', () => {
   it('Should return a line', () => {
-    assert.strictEqual(head('hello', 10), 'hello');
-    assert.strictEqual(head('bye', 10), 'bye');
-    assert.strictEqual(head('', 10), '');
+    assert.strictEqual(head('hello', { numOfLines: 10 }), 'hello');
+    assert.strictEqual(head('bye', { numOfLines: 10 }), 'bye');
+    assert.strictEqual(head('', { numOfLines: 10 }), '');
   });
 
   it('Should return multiple lines', () => {
-    assert.strictEqual(head('a\nb\nc\nd\ne', 10),
+    assert.strictEqual(head('a\nb\nc\nd\ne', { numOfLines: 10 }),
       'a\nb\nc\nd\ne');
   });
 
   it('Should return 10 lines when content is more than 10 lines', () => {
-    assert.strictEqual(head('a\nb\nc\nd\ne\nf\ng\nh\ni\nj\nk', 10),
-      'a\nb\nc\nd\ne\nf\ng\nh\ni\nj');
+    assert.strictEqual(head('a\nb\nc\nd\ne\nf\ng\nh\ni\nj\nk', {
+      numOfLines: 10
+    }), 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj');
   });
 
   it('Should return only specified number of lines', () => {
-    assert.strictEqual(head('a\nb\nc\nd\ne', 2),
+    assert.strictEqual(head('a\nb\nc\nd\ne', { numOfLines: 2 }),
       'a\nb');
-    assert.strictEqual(head('a\nb\nc\nd\ne\nf\ng\nh\ni\nj\nk\n', 11),
-      'a\nb\nc\nd\ne\nf\ng\nh\ni\nj\nk');
+    assert.strictEqual(head('a\nb\nc\nd\ne\nf\ng\nh\ni\nj\nk\n', {
+      numOfLines:
+        11
+    }), 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj\nk');
   });
+
 });
