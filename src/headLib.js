@@ -8,5 +8,11 @@ const head = (content, limit, delimiter) => {
   return joinLines(firstLines, delimiter);
 };
 
+const headMain = (readFile, fileName) => {
+  const content = readFile(fileName, 'utf8');
+  return head(content, 10, '\n');
+};
+
 exports.head = head;
 exports.contentUptoCount = contentUptoCount;
+exports.headMain = headMain;
