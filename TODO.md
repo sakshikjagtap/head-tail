@@ -1,11 +1,11 @@
 **TODO :**
 - [ ] write tests for `splitLines` and `joinLines`
-- [ ] Make `head bytes` work
 - [ ] Make `head file` work
 - [ ] Provide default 10 for `-n` option
 - [ ] Make `head n file` work (-n)
  
 **Done :**
+- [x] Make `head bytes` work
 - [x] Change options structure for `head` 
 - [x] Move `splitLines` and `joinLines` into another file.
 - [x] Write test cases for `linesUptoCount`

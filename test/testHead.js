@@ -1,9 +1,10 @@
 const assert = require('assert');
-const { head, linesUptoCount } = require('../src/headLib.js');
+const { head, contentUptoCount } = require('../src/headLib.js');
 
 describe('linesUptoCount', () => {
   it('Should return array of lines of specified length', () => {
-    assert.deepStrictEqual(linesUptoCount(['a', 'b', 'c', 'd'], 2), ['a', 'b']);
+    assert.deepStrictEqual(contentUptoCount(['a', 'b', 'c', 'd'], 2), ['a', 'b']
+    );
   });
 });
 
@@ -32,6 +33,11 @@ describe('head', () => {
       numOfLines:
         11
     }), 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj\nk');
+  });
+
+  it('Should return only specified number of bytes', () => {
+    assert.strictEqual(head('hello', { numOfBytes: 3 }), 'hel');
+    assert.strictEqual(head('bye\nhello', { numOfBytes: 5 }), 'bye\nh');
   });
 
 });
