@@ -1,10 +1,14 @@
 **TODO :**
-- [ ] ~~write tests for `splitByNewLine` and `joinByNewLine`~~
+- [ ] write tests for `splitByNewLine` and `joinByNewLine`
 - [ ] Make `head file` work
+- [ ] Write test cases for linesUptoCount
+- [ ] Provide default 10 for `-n` option
 - [ ] Make `head n file` work (-n)
  
 
 **Done :**
+- [x] Make `head n` work for file content
+- [x] Change contract of head function
 - [x] Extract function slice 
 - [x] Make `head` work for file content
 - [x] Implement head for multiple lines

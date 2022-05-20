@@ -2,11 +2,13 @@ const splitLines = content => content.split('\n');
 
 const joinLines = lines => lines.join('\n');
 
-const firstTenLines = lines => lines.slice(0, 10);
+const linesUptoCount = (lines, count) => {
+  return lines.slice(0, count);
+};
 
-const head = (content) => {
+const head = (content, count) => {
   const lines = splitLines(content);
-  const firstLines = firstTenLines(lines);
+  const firstLines = linesUptoCount(lines, count);
   return joinLines(firstLines);
 };
 
