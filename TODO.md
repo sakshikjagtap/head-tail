@@ -1,10 +1,10 @@
 **TODO :**
-- [ ] write tests for `splitLines` and `joinLines`
 - [ ] Provide default 10 for `-n` option
 - [ ] Refactor `head` function
 - [ ] Parse arguments to object
  
 **Done :**
+- [x] write tests for `splitLines` and `joinLines`
 - [x] Make `head n file` work (-n)
 - [x] Make `head file` work
 - [x] Change contract of head
