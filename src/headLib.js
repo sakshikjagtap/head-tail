@@ -4,7 +4,7 @@ const { parseArgs } = require('./parseArgs.js');
 const contentUptoLimit = (lines, limit) => lines.slice(0, limit);
 
 const head = (content, { limit, option }) => {
-  const delimiter = option === '-n' ? '\n' : '';
+  const delimiter = option === 'count' ? '\n' : '';
   const lines = splitLines(content, delimiter);
   const firstLines = contentUptoLimit(lines, limit);
   return joinLines(firstLines, delimiter);

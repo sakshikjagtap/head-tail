@@ -1,15 +1,16 @@
 const isFlag = (arg) => /^-.$/.test(arg);
 
-const parseArgs = ([...args]) => {
-  const options = { option: '-n', limit: 10 };
+const parseArgs = (args) => {
+  const parsedArgs = { option: 'count', limit: 10 };
+  const options = { '-n': 'count', '-c': 'bytes' };
   let index = 0;
   while (isFlag(args[index])) {
-    options.option = args[index];
-    options.limit = +args[index + 1];
+    parsedArgs.option = options[args[index]];
+    parsedArgs.limit = +args[index + 1];
     index += 2;
   }
-  options.files = args.slice(index);
-  return options;
+  parsedArgs.files = args.slice(index);
+  return parsedArgs;
 };
 
 exports.parseArgs = parseArgs;
