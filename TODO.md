@@ -1,8 +1,9 @@
 **TODO :**
 - [ ] Refactor `head` function
 - [ ] Parse arguments to object
- 
+- [ ] make work when same flag is repeated 
 **Done :**
+- [x] Refactor parseArgs function 
 - [x] Provide default 10 for `-n` option
 - [x] write tests for `splitLines` and `joinLines`
 - [x] Make `head n file` work (-n)

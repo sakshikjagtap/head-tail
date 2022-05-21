@@ -3,15 +3,16 @@ const findFiles = (args) => {
   return args.filter((arg) => regex.test(arg));
 };
 
+const isFlag = (arg) => /^-.$/.test(arg);
+
 const parseArgs = ([...args]) => {
+  const [flag, value] = args;
   const values = { option: '-n', limit: 10 };
-  if (/^[^-]/.test(args[0])) {
-    values.files = args;
-    return values;
+  if (isFlag(flag)) {
+    values.option = flag;
+    values.limit = +value;
   }
-  values.option = args[0];
-  values.limit = +args[1];
-  values.files = findFiles(args.slice(2));
+  values.files = findFiles(args);
   return values;
 };
 exports.parseArgs = parseArgs;
