@@ -1,4 +1,9 @@
 const { headMain } = require('./src/headLib');
 const fs = require('fs');
 
-console.log(headMain(fs.readFileSync, process.argv.slice(2)));
+// console.log('usage: head [-n lines | -c bytes] [file ...]');
+const main = function () {
+  console.log(headMain(fs.readFileSync, process.argv.slice(2)));
+};
+
+main();

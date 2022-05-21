@@ -3,11 +3,12 @@
 - [ ] Parse arguments to object
 - [ ] Validate flags
 - [ ] Validate Flag value 
-
+- [ ] Refactor parseArgs function
 **MAY BE**
 
 
 **Done :**
+- [x] make work `-n1` `-1`
 - [x] Consider change contract of head
 - [x] Refactor parseArgs function
 - [x] Make work when same flag is repeated 
