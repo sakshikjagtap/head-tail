@@ -1,9 +1,9 @@
 const assert = require('assert');
-const { head, contentUptoCount, headMain } = require('../src/headLib.js');
+const { head, contentUptoLimit, headMain } = require('../src/headLib.js');
 
 describe('linesUptoCount', () => {
   it('Should return array of lines of specified length', () => {
-    assert.deepStrictEqual(contentUptoCount(['a', 'b', 'c', 'd'], 2), ['a', 'b']
+    assert.deepStrictEqual(contentUptoLimit(['a', 'b', 'c', 'd'], 2), ['a', 'b']
     );
   });
 });
@@ -52,7 +52,13 @@ describe('headMain', () => {
 
   it('should return lines of given file', () => {
     const mockReadFileSync = mock('a.txt', 'hello');
-    assert.strictEqual(headMain(mockReadFileSync, ['-n', '10', 'a.txt']),
+    assert.strictEqual(headMain(mockReadFileSync, ['a.txt']),
+      'hello');
+  });
+
+  it('should return lines of given file with specified switch', () => {
+    const mockReadFileSync = mock('a.txt', 'hello');
+    assert.strictEqual(headMain(mockReadFileSync, ['-n', '3', 'a.txt']),
       'hello');
   });
 });
