@@ -16,26 +16,30 @@ describe('head', () => {
   });
 
   it('Should return multiple lines', () => {
-    assert.strictEqual(head('a\nb\nc\nd\ne', 10, '\n'),
+    assert.strictEqual(head('a\nb\nc\nd\ne', { option: '-n', limit: 10 }),
       'a\nb\nc\nd\ne');
   });
 
   it('Should return 10 lines when content is more than 10 lines', () => {
-    assert.strictEqual(head('a\nb\nc\nd\ne\nf\ng\nh\ni\nj\nk', 10, '\n'
+    assert.strictEqual(head('a\nb\nc\nd\ne\nf\ng\nh\ni\nj\nk', {
+      option: '-n',
+      limit: 10
+    }
     ), 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj');
   });
 
   it('Should return only specified number of lines', () => {
-    assert.strictEqual(head('a\nb\nc\nd\ne', 2, '\n'),
+    assert.strictEqual(head('a\nb\nc\nd\ne', { option: '-n', limit: 2 }),
       'a\nb');
-    assert.strictEqual(head('a\nb\nc\nd\ne\nf\ng\nh\ni\nj\nk\n', 11
-      , '\n'
-    ), 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj\nk');
+    assert.strictEqual(head('a\nb\nc\nd\ne\nf\ng\nh\ni\nj\nk\n', {
+      option: '-n',
+      limit: 11
+    }), 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj\nk');
   });
 
   it('Should return only specified number of bytes', () => {
-    assert.strictEqual(head('hello', 3, ''), 'hel');
-    assert.strictEqual(head('bye\nhello', 5, ''),
+    assert.strictEqual(head('hello', { option: '-c', limit: 3 }), 'hel');
+    assert.strictEqual(head('bye\nhello', { option: '-c', limit: 5 }),
       'bye\nh');
   });
 

@@ -5,10 +5,10 @@
 - [ ] Validate Flag value 
 
 **MAY BE**
-- [ ] Consider change contract of head
 
 
 **Done :**
+- [x] Consider change contract of head
 - [x] Refactor parseArgs function
 - [x] Make work when same flag is repeated 
 - [x] Refactor parseArgs function 

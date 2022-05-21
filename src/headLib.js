@@ -3,7 +3,8 @@ const { parseArgs } = require('./parseArgs.js');
 
 const contentUptoLimit = (lines, limit) => lines.slice(0, limit);
 
-const head = (content, limit, delimiter) => {
+const head = (content, { limit, option }) => {
+  const delimiter = option === '-n' ? '\n' : '';
   const lines = splitLines(content, delimiter);
   const firstLines = contentUptoLimit(lines, limit);
   return joinLines(firstLines, delimiter);
@@ -11,9 +12,8 @@ const head = (content, limit, delimiter) => {
 
 const headMain = (readFile, args) => {
   const { limit, option, files: [file] } = parseArgs(args);
-  const switches = { '-n': '\n', '-c': '' };
   const content = readFile(file, 'utf8');
-  return head(content, limit, switches[option]);
+  return head(content, { limit, option });
 };
 
 exports.head = head;
