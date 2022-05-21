@@ -25,4 +25,9 @@ describe('parseArgs', () => {
     });
   });
 
+  it('should return object of arguments if same flag is multiple times ', () => {
+    assert.deepStrictEqual(parseArgs(['-n', 2, '-n', 3, './a.txt']), {
+      option: '-n', limit: 3, files: ['./a.txt']
+    });
+  });
 });

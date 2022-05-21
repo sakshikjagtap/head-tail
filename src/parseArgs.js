@@ -6,11 +6,13 @@ const findFiles = (args) => {
 const isFlag = (arg) => /^-.$/.test(arg);
 
 const parseArgs = ([...args]) => {
-  const [flag, value] = args;
   const values = { option: '-n', limit: 10 };
-  if (isFlag(flag)) {
-    values.option = flag;
-    values.limit = +value;
+  for (let index = 0; index < args.length; index++) {
+    if (isFlag(args[index])) {
+      values.option = args[index];
+    } else if (isFinite(args[index])) {
+      values.limit = +args[index];
+    }
   }
   values.files = findFiles(args);
   return values;
