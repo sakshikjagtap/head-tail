@@ -8,6 +8,7 @@
 
 
 **Done :**
+- [x] Refactor getValue and getFlag
 - [x] make work `-n1` `-1`
 - [x] Consider change contract of head
 - [x] Refactor parseArgs function

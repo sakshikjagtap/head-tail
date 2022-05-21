@@ -3,15 +3,15 @@ const { parseArgs, getFlag, getValue } = require('../src/parseArgs.js');
 
 describe('getFlag', () => {
   it('should return a flag if arg is -n1', () => {
-    assert.strictEqual(getFlag('-n1'), '-n');
+    assert.strictEqual(getFlag('-n1'), 'count');
   });
 
   it('should return a flag if arg is -1', () => {
-    assert.strictEqual(getFlag('-n'), '-n');
+    assert.strictEqual(getFlag('-n'), 'count');
   });
 
   it('should return a flag if arg is -n', () => {
-    assert.strictEqual(getFlag('-n'), '-n');
+    assert.strictEqual(getFlag('-n'), 'count');
   });
 });
 
