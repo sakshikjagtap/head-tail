@@ -1,10 +1,15 @@
 **TODO :**
 - [ ] Refactor `head` function
 - [ ] Parse arguments to object
-- [ ] Refactor parseArgs function
 - [ ] Validate flags
 - [ ] Validate Flag value 
+
+**MAY BE**
+- [ ] Consider change contract of head
+
+
 **Done :**
+- [x] Refactor parseArgs function
 - [x] Make work when same flag is repeated 
 - [x] Refactor parseArgs function 
 - [x] Provide default 10 for `-n` option

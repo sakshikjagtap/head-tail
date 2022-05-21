@@ -1,21 +1,15 @@
-const findFiles = (args) => {
-  const regex = /^[^\d-]/;
-  return args.filter((arg) => regex.test(arg));
-};
-
 const isFlag = (arg) => /^-.$/.test(arg);
 
 const parseArgs = ([...args]) => {
-  const values = { option: '-n', limit: 10 };
-  for (let index = 0; index < args.length; index++) {
-    if (isFlag(args[index])) {
-      values.option = args[index];
-    } else if (isFinite(args[index])) {
-      values.limit = +args[index];
-    }
+  const options = { option: '-n', limit: 10 };
+  let index = 0;
+  while (isFlag(args[index])) {
+    options.option = args[index];
+    options.limit = +args[index + 1];
+    index += 2;
   }
-  values.files = findFiles(args);
-  return values;
+  options.files = args.slice(index);
+  return options;
 };
+
 exports.parseArgs = parseArgs;
-exports.findFiles = findFiles;

@@ -1,16 +1,5 @@
 const assert = require('assert');
-const { parseArgs, findFiles } = require('../src/parseArgs.js');
-
-describe('findFiles', () => {
-  it('should find a single file', () => {
-    assert.deepStrictEqual(findFiles(['-n', '3', 'a.txt']), ['a.txt']);
-  });
-
-  it('should find multiple file', () => {
-    assert.deepStrictEqual(findFiles(['-n', '3', 'a.txt', 'b.txt']), ['a.txt'
-      , 'b.txt']);
-  });
-});
+const { parseArgs } = require('../src/parseArgs.js');
 
 describe('parseArgs', () => {
   it('should return object of argument', () => {
