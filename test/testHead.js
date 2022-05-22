@@ -82,4 +82,10 @@ describe('headMain', () => {
     assert.strictEqual(headMain(mockReadFileSync, ['-n1', 'a.txt']),
       'hello');
   });
+
+  it('Throw an error when file is not present', () => {
+    const mockReadFileSync = mock('a.txt', 'hello');
+    assert.throws(() => headMain(mockReadFileSync, ['b.txt']));
+  });
+
 });

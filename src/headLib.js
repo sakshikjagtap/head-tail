@@ -24,7 +24,12 @@ const validateArgs = (args) => {
 const headMain = (readFile, args) => {
   validateArgs(args);
   const { limit, option, files: [file] } = parseArgs(args);
-  const content = readFile(file, 'utf8');
+  let content;
+  try {
+    content = readFile(file, 'utf8');
+  } catch (error) {
+    throw 'head: a.txt: No such file or directory';
+  }
   return head(content, { limit, option });
 };
 
@@ -32,4 +37,3 @@ exports.head = head;
 exports.contentUptoLimit = contentUptoLimit;
 exports.headMain = headMain;
 exports.validateArgs = validateArgs;
-

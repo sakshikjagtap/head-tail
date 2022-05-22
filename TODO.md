@@ -4,11 +4,12 @@
 - [ ] Validate Flag value 
 - [ ] Refactor parseArgs function
 - [ ] Refactor ValidateArgs function
-- [ ] Throw an error when file is not present
+
 **MAY BE**
 - [ ] Consider change contract of parseArgs
 
 **Done :**
+- [x] Throw an error when file is not present
 - [x] Validate flags
 - [x] Throw an error if both switches present
 - [x] Refactor getValue and getFlag
