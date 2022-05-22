@@ -2,12 +2,14 @@
 - [ ] Refactor `head` function
 - [ ] Parse arguments to object
 - [ ] Validate Flag value 
-- [ ] Validate flags
 - [ ] Refactor parseArgs function
+- [ ] Refactor ValidateArgs function
+- [ ] Throw an error when file is not present
 **MAY BE**
 - [ ] Consider change contract of parseArgs
 
 **Done :**
+- [x] Validate flags
 - [x] Throw an error if both switches present
 - [x] Refactor getValue and getFlag
 - [x] make work `-n1` `-1`

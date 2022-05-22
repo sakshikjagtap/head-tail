@@ -50,6 +50,10 @@ describe('validateArgs', () => {
     assert.throws(() => validateArgs(['-n', '3', '-c']));
   });
 
+  it('should give error if flag is invalid', () => {
+    assert.throws(() => validateArgs(['-v']));
+    assert.throws(() => validateArgs(['-s']));
+  });
 });
 
 describe('headMain', () => {

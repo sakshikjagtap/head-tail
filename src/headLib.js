@@ -15,6 +15,10 @@ const validateArgs = (args) => {
     throw 'head: cant combine line and byte counts';
   }
 
+  if (/-[^nc\d]/.test(args)) {
+    const usage = 'usage: head[-n lines | -c bytes][file ...]';
+    throw 'head: illegal option -- v\n' + usage;
+  }
 };
 
 const headMain = (readFile, args) => {
