@@ -10,7 +10,15 @@ const head = (content, { limit, option }) => {
   return joinLines(firstLines, delimiter);
 };
 
+const validateArgs = (args) => {
+  if (args.includes('-n') && args.includes('-c')) {
+    throw 'head: cant combine line and byte counts';
+  }
+
+};
+
 const headMain = (readFile, args) => {
+  validateArgs(args);
   const { limit, option, files: [file] } = parseArgs(args);
   const content = readFile(file, 'utf8');
   return head(content, { limit, option });
@@ -19,3 +27,5 @@ const headMain = (readFile, args) => {
 exports.head = head;
 exports.contentUptoLimit = contentUptoLimit;
 exports.headMain = headMain;
+exports.validateArgs = validateArgs;
+

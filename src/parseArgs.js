@@ -16,7 +16,7 @@ const parseArgs = (args) => {
       parsedArgs.option = getFlag(args[index]);
       parsedArgs.limit = getValue(args[index], args[index + 1]);
     } else if (!isFinite(args[index])) {
-      parsedArgs['files'].push(args[index]);
+      parsedArgs.files.push(args[index]);
     }
   }
   return parsedArgs;

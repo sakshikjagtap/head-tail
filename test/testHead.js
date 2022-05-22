@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { head, contentUptoLimit, headMain } = require('../src/headLib.js');
+const { head, contentUptoLimit, headMain, validateArgs } = require('../src/headLib.js');
 
 describe('linesUptoCount', () => {
   it('Should return array of lines of specified length', () => {
@@ -45,6 +45,13 @@ describe('head', () => {
 
 });
 
+describe('validateArgs', () => {
+  it('should give error if both flags present', () => {
+    assert.throws(() => validateArgs(['-n', '3', '-c']));
+  });
+
+});
+
 describe('headMain', () => {
   const mock = (filename, content) => {
     return (expectedFile, encoding) => {
@@ -63,6 +70,12 @@ describe('headMain', () => {
   it('should return lines of given file with specified switch', () => {
     const mockReadFileSync = mock('a.txt', 'hello');
     assert.strictEqual(headMain(mockReadFileSync, ['-n', '3', 'a.txt']),
+      'hello');
+  });
+
+  it('should return lines for "-n1"', () => {
+    const mockReadFileSync = mock('a.txt', 'hello');
+    assert.strictEqual(headMain(mockReadFileSync, ['-n1', 'a.txt']),
       'hello');
   });
 });
