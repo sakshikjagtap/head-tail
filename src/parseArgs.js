@@ -1,23 +1,21 @@
+/* eslint-disable no-else-return */
 const isFlag = (arg) => arg.startsWith('-');
 
-
 const getFlag = (arg) => {
-  const keys = { '-n': 'count', '-c': 'bytes' };
-  return keys['-' + arg.match(/[nc]/)] || keys['-n'];
-};
-
-const getValue = (arg, nextArg) => {
-  return +nextArg || +arg.match(/\d+/);
-};
-
-const validateArgs = (args) => {
-  if (args.includes('-n') && args.includes('-c')) {
-    throw 'head: cant combine line and byte counts';
-  }
-
-  if (/-[^nc\d]/.test(args + '')) {
+  if (arg === '-n' || arg === '-c') {
+    const keys = { '-n': 'count', '-c': 'bytes' };
+    return keys[arg];
+  } else {
     const usage = 'usage: head[-n lines | -c bytes][file ...]';
-    throw 'head: illegal option -- v\n' + usage;
+    throw `head: illegal option -- ${arg}\n ${usage}`;
+  }
+};
+
+const getValue = (nextArg) => {
+  if (isFinite(+nextArg)) {
+    return +nextArg;
+  } else {
+    throw `head: illegal line count -- ${nextArg}`;
   }
 };
 
@@ -31,39 +29,20 @@ const restructureArgs = (args) => {
   return restructuredArgs.filter(arg => arg);
 };
 
-const separateOptionsAndFiles = (args) => {
-  let index = 0;
-  const options = { flags: [] };
-  while (isFlag(args[index])) {
-    if (args[index].match(/-[a-z]$/)) {
-      options.flags.push(args[index], args[index + 1]);
-      index += 2;
-    } else {
-      options.flags.push(args[index]);
-      index++;
-    }
-  }
-  options.files = args.slice(index);
-  return options;
-};
-
 const parseArgs = (args) => {
-  const separatedargs = separateOptionsAndFiles(args);
-  validateArgs(separatedargs.flags);
+  const structuredArgs = restructureArgs(args);
   const parsedArgs = { option: 'count', limit: 10, files: [] };
-  for (let index = 0; index < separatedargs.flags.length; index++) {
-    if (isFlag(args[index])) {
-      parsedArgs.option = getFlag(args[index]);
-      parsedArgs.limit = getValue(args[index], args[index + 1]);
-    }
+  let index = 0;
+  while (isFlag(structuredArgs[index])) {
+    parsedArgs.option = getFlag(structuredArgs[index]);
+    parsedArgs.limit = getValue(structuredArgs[index + 1]);
+    index += 2;
   }
-  parsedArgs.files = separatedargs.files;
+  parsedArgs.files = structuredArgs.slice(index);
   return parsedArgs;
 };
 
 exports.parseArgs = parseArgs;
 exports.getFlag = getFlag;
 exports.getValue = getValue;
-exports.separateOptionsAndFiles = separateOptionsAndFiles;
-exports.validateArgs = validateArgs;
 exports.restructureArgs = restructureArgs;

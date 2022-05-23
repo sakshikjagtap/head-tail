@@ -1,14 +1,14 @@
 **TODO :**
 - [ ] Refactor `head` function
 - [ ] Parse arguments to object
-- [ ] Validate Flag value 
-- [ ] Refactor parseArgs function
-- [ ] Refactor ValidateArgs function
+- [ ] Validate Flag value for zero 
 
 **MAY BE**
 - [ ] Consider change contract of parseArgs
 
 **Done :**
+- [ ] ~~Refactor ValidateArgs function~~
+- [x] Refactor parseArgs function
 - [x] restructure arguments 
 - [x] Remove  regular expression from isFlag
 - [x] Move validate flags in parseFlags
