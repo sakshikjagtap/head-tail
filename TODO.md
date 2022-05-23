@@ -1,11 +1,13 @@
 **TODO :**
 - [ ] Refactor `head` function
 - [ ] Parse arguments to object
-
+- [ ] Change logic of structureArgs
+ 
 **MAY BE**
 - [ ] Consider change contract of parseArgs
 
 **Done :**
+- [x] Refactored parseArgs 
 - [x] Check the function is throwing correct error 
 - [x] edit error for no such file or directory
 - [x] Validate Flag value zero 

@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { parseArgs, getFlag, getValue, restructureArgs, areBothFlagPresent } = require('../src/parseArgs.js');
+const { parseArgs, getFlag, getValue, restructureArgs, areBothFlagPresent, throwErrorIfBothPresent } = require('../src/parseArgs.js');
 
 describe('getFlag', () => {
   it('should return a flag if arg is -n', () => {
@@ -76,6 +76,14 @@ describe('restrutureArgs', () => {
 describe('areBothFlagPresent', () => {
   it('Should return true if both flags are present', () => {
     assert.strictEqual(areBothFlagPresent(['-n', '1', '-c', '1']), true);
+  });
+});
+
+describe('throwErrorIfBothPresent', () => {
+  it('message', () => {
+    assert.throws(() => throwErrorIfBothPresent(['-n', '1', '-c', 2]), {
+      message: 'head: cant combine line and byte counts'
+    });
   });
 });
 

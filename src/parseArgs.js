@@ -1,26 +1,35 @@
-/* eslint-disable no-else-return */
 const isFlag = (arg) => arg.startsWith('-');
 
-const getFlag = (arg) => {
-  if (arg === '-n' || arg === '-c') {
-    const keys = { '-n': 'count', '-c': 'bytes' };
-    return keys[arg];
-  } else {
-    const usage = 'usage: head[-n lines | -c bytes][file ...]';
-    throw { message: `head: illegal option -- ${arg[1]}\n ${usage}` };
-  }
+const isValidFlag = (arg) => ['-n', '-c'].includes(arg);
+
+const illegalOption = (option) => {
+  const usage = 'usage: head[-n lines | -c bytes][file ...]';
+  return { message: `head: illegal option -- ${option}\n ${usage}` };
 };
 
-const getValue = (nextArg) => {
-  if (/[1-9]\d*/.test(nextArg)) {
-    return +nextArg;
-  } else {
-    throw { message: `head: illegal line count -- ${nextArg}` };
+const getFlag = (arg) => {
+  if (!isValidFlag(arg)) {
+    throw illegalOption(arg[1]);
   }
+  const keys = { '-n': 'count', '-c': 'bytes' };
+  return keys[arg];
+};
+
+const isValidValue = (value) => isFinite(+value) && +value > 0;
+
+const illegalLineCount = (value) => {
+  return { message: `head: illegal line count -- ${value}` };
+};
+
+const getValue = (value) => {
+  if (!isValidValue(value)) {
+    throw illegalLineCount(value);
+  }
+  return +value;
 };
 
 const structureArgs = (arg) => {
-  return isFinite(+arg[1]) ? ['-n', arg[1]] : [arg.slice(0, 2), arg.slice(2)]
+  return isFinite(+arg[1]) ? ['-n', arg[1]] : [arg.slice(0, 2), arg.slice(2)];
 };
 
 const restructureArgs = (args) => {
@@ -31,9 +40,15 @@ const restructureArgs = (args) => {
 
 const areBothFlagPresent = (args) => args.includes('-n') && args.includes('-c');
 
+const combineLinesAndBytesError = () => {
+  return {
+    message: 'head: cant combine line and byte counts'
+  };
+};
+
 const throwErrorIfBothPresent = (args) => {
   if (areBothFlagPresent(args)) {
-    throw { message: 'head: cant combine line and byte counts' };
+    throw combineLinesAndBytesError();
   }
 };
 
@@ -56,3 +71,4 @@ exports.getFlag = getFlag;
 exports.getValue = getValue;
 exports.restructureArgs = restructureArgs;
 exports.areBothFlagPresent = areBothFlagPresent;
+exports.throwErrorIfBothPresent = throwErrorIfBothPresent;
