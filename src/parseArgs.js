@@ -12,7 +12,7 @@ const getFlag = (arg) => {
 };
 
 const getValue = (nextArg) => {
-  if (isFinite(+nextArg)) {
+  if (/[1-9]\d*/.test(nextArg)) {
     return +nextArg;
   } else {
     throw `head: illegal line count -- ${nextArg}`;
@@ -29,8 +29,17 @@ const restructureArgs = (args) => {
   return restructuredArgs.filter(arg => arg);
 };
 
+const areBothFlagPresent = (args) => args.includes('-n') && args.includes('-c');
+
+const throwErrorIfBothPresent = (args) => {
+  if (areBothFlagPresent(args)) {
+    throw 'head: cant combine line and byte counts';
+  }
+};
+
 const parseArgs = (args) => {
   const structuredArgs = restructureArgs(args);
+  throwErrorIfBothPresent(structuredArgs);
   const parsedArgs = { option: 'count', limit: 10, files: [] };
   let index = 0;
   while (isFlag(structuredArgs[index])) {
@@ -46,3 +55,4 @@ exports.parseArgs = parseArgs;
 exports.getFlag = getFlag;
 exports.getValue = getValue;
 exports.restructureArgs = restructureArgs;
+exports.areBothFlagPresent = areBothFlagPresent;

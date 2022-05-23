@@ -1,12 +1,13 @@
 **TODO :**
 - [ ] Refactor `head` function
 - [ ] Parse arguments to object
-- [ ] Validate Flag value for zero 
+- [ ] edit error for no such file or directory
 
 **MAY BE**
 - [ ] Consider change contract of parseArgs
 
 **Done :**
+- [x] Validate Flag value zero 
 - [ ] ~~Refactor ValidateArgs function~~
 - [x] Refactor parseArgs function
 - [x] restructure arguments 

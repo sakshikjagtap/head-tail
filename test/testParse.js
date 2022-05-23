@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { parseArgs, getFlag, getValue, restructureArgs } = require('../src/parseArgs.js');
+const { parseArgs, getFlag, getValue, restructureArgs, areBothFlagPresent } = require('../src/parseArgs.js');
 
 describe('getFlag', () => {
   it('should return a flag if arg is -n', () => {
@@ -65,6 +65,12 @@ describe('restrutureArgs', () => {
     assert.deepStrictEqual(restructureArgs(['-n', '1', 'abc.txt']), ['-n', '1', 'abc.txt']);
     assert.deepStrictEqual(restructureArgs(['-1', 'abc.txt']), ['-n', '1', 'abc.txt']);
     assert.deepStrictEqual(restructureArgs(['-n1', 'abc.txt']), ['-n', '1', 'abc.txt']);
+  });
+});
+
+describe('areBothFlagPresent', () => {
+  it('Should return true if both flags are present', () => {
+    assert.strictEqual(areBothFlagPresent(['-n', '1', '-c', '1']), true);
   });
 });
 
