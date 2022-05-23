@@ -1,11 +1,9 @@
+const { illegalOption, illegalLineCount, combineLinesAndBytesError } = require
+  ('./errors.js');
+
 const isFlag = (arg) => arg.startsWith('-');
 
 const isValidFlag = (arg) => ['-n', '-c'].includes(arg);
-
-const illegalOption = (option) => {
-  const usage = 'usage: head[-n lines | -c bytes][file ...]';
-  return { message: `head: illegal option -- ${option}\n ${usage}` };
-};
 
 const getFlag = (arg) => {
   if (!isValidFlag(arg)) {
@@ -16,10 +14,6 @@ const getFlag = (arg) => {
 };
 
 const isValidValue = (value) => isFinite(+value) && +value > 0;
-
-const illegalLineCount = (value) => {
-  return { message: `head: illegal line count -- ${value}` };
-};
 
 const getValue = (value) => {
   if (!isValidValue(value)) {
@@ -40,12 +34,6 @@ const restructureArgs = (args) => {
 };
 
 const areBothFlagPresent = (args) => args.includes('-n') && args.includes('-c');
-
-const combineLinesAndBytesError = () => {
-  return {
-    message: 'head: cant combine line and byte counts'
-  };
-};
 
 const throwErrorIfBothPresent = (args) => {
   if (areBothFlagPresent(args)) {

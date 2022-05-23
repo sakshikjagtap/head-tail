@@ -1,11 +1,13 @@
 **TODO :**
 - [ ] Refactor `head` function
 - [ ] Parse arguments to object
+- [ ] Make work for multiple file
  
 **MAY BE**
 - [ ] Consider change contract of parseArgs
 
 **Done :**
+- [x] Move error functions to new file
 - [x] Change logic of structureArgs
 - [x] Refactored parseArgs 
 - [x] Check the function is throwing correct error 
