@@ -9,7 +9,9 @@ describe('getFlag', () => {
     assert.strictEqual(getFlag('-c'), 'bytes');
   });
   it('should throw an error if flag is invalid', () => {
-    assert.throws(() => getFlag('-v'));
+    assert.throws(() => getFlag('-v'), {
+      message: 'head: illegal option -- v\n usage: head[-n lines | -c bytes][file ...]'
+    });
   });
 });
 
@@ -19,10 +21,10 @@ describe('getValue', () => {
   });
 
   it('should throw an error if value is invalid', () => {
-    assert.throws(() => getValue('b'));
+    assert.throws(() => getValue('b'), { message: 'head: illegal line count -- b' });
   });
   it('should throw an error if value is zero', () => {
-    assert.throws(() => getValue('0'));
+    assert.throws(() => getValue('0'), { message: 'head: illegal line count -- 0' });
   });
 });
 
@@ -58,8 +60,8 @@ describe('parseArgs', () => {
   });
 
   it('should throw an error if options are invalid ', () => {
-    assert.throws(() => parseArgs(['-n', 1, '-c', 3, './a.txt']));
-    assert.throws(() => parseArgs(['-v', 1, './a.txt']));
+    assert.throws(() => parseArgs(['-n', '1', '-c', '3', './a.txt']), { message: 'head: cant combine line and byte counts' });
+    assert.throws(() => parseArgs(['-v', '1', './a.txt'], { message: 'head: illegal option -- v\n usage: head[-n lines | -c bytes][file ...]' }));
   });
 });
 

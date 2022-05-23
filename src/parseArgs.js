@@ -7,7 +7,7 @@ const getFlag = (arg) => {
     return keys[arg];
   } else {
     const usage = 'usage: head[-n lines | -c bytes][file ...]';
-    throw `head: illegal option -- ${arg}\n ${usage}`;
+    throw { message: `head: illegal option -- ${arg[1]}\n ${usage}` };
   }
 };
 
@@ -15,7 +15,7 @@ const getValue = (nextArg) => {
   if (/[1-9]\d*/.test(nextArg)) {
     return +nextArg;
   } else {
-    throw `head: illegal line count -- ${nextArg}`;
+    throw { message: `head: illegal line count -- ${nextArg}` };
   }
 };
 
@@ -33,7 +33,7 @@ const areBothFlagPresent = (args) => args.includes('-n') && args.includes('-c');
 
 const throwErrorIfBothPresent = (args) => {
   if (areBothFlagPresent(args)) {
-    throw 'head: cant combine line and byte counts';
+    throw { message: 'head: cant combine line and byte counts' };
   }
 };
 
