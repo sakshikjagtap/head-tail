@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { parseArgs, getFlag, getValue, separateOptionsAndFiles, validateArgs } = require('../src/parseArgs.js');
+const { parseArgs, getFlag, getValue, separateOptionsAndFiles, validateArgs, restructureArgs } = require('../src/parseArgs.js');
 
 describe('getFlag', () => {
   it('should return a flag if arg is -n1', () => {
@@ -88,6 +88,14 @@ describe('validateArgs', () => {
   it('should give error if flag is invalid', () => {
     assert.throws(() => validateArgs(['-v']));
     assert.throws(() => validateArgs(['-s']));
+  });
+});
+
+describe('restrutureArgs', () => {
+  it('should restructure arguments', () => {
+    assert.deepStrictEqual(restructureArgs(['-n', '1', 'abc.txt']), ['-n', '1', 'abc.txt']);
+    assert.deepStrictEqual(restructureArgs(['-1', 'abc.txt']), ['-n', '1', 'abc.txt']);
+    assert.deepStrictEqual(restructureArgs(['-n1', 'abc.txt']), ['-n', '1', 'abc.txt']);
   });
 });
 

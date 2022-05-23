@@ -21,6 +21,16 @@ const validateArgs = (args) => {
   }
 };
 
+const structureArgs = (arg) => {
+  return isFinite(+arg[1]) ? ['-n', arg[1]] : [arg.slice(0, 2), arg.slice(2)]
+};
+
+const restructureArgs = (args) => {
+  const restructuredArgs = args.flatMap(arg => isFlag(arg) ?
+    structureArgs(arg) : arg);
+  return restructuredArgs.filter(arg => arg);
+};
+
 const separateOptionsAndFiles = (args) => {
   let index = 0;
   const options = { flags: [] };
@@ -56,3 +66,4 @@ exports.getFlag = getFlag;
 exports.getValue = getValue;
 exports.separateOptionsAndFiles = separateOptionsAndFiles;
 exports.validateArgs = validateArgs;
+exports.restructureArgs = restructureArgs;
