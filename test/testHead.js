@@ -67,25 +67,25 @@ describe('headMain', () => {
 
   it('should return lines of given file', () => {
     const mockReadFileSync = mock('a.txt', 'hello');
-    assert.strictEqual(headMain(mockReadFileSync, ['a.txt']),
+    assert.strictEqual(headMain(mockReadFileSync, 'a.txt'),
       'hello');
   });
 
   it('should return lines of given file with specified switch', () => {
     const mockReadFileSync = mock('a.txt', 'hello');
-    assert.strictEqual(headMain(mockReadFileSync, ['-n', '3', 'a.txt']),
+    assert.strictEqual(headMain(mockReadFileSync, '-n', '3', 'a.txt'),
       'hello');
   });
 
   it('should return lines for "-n1"', () => {
     const mockReadFileSync = mock('a.txt', 'hello');
-    assert.strictEqual(headMain(mockReadFileSync, ['-n1', 'a.txt']),
+    assert.strictEqual(headMain(mockReadFileSync, '-n1', 'a.txt'),
       'hello');
   });
 
   it('Throw an error when file is not present', () => {
     const mockReadFileSync = mock('a.txt', 'hello');
-    assert.throws(() => headMain(mockReadFileSync, ['b.txt']));
+    assert.throws(() => headMain(mockReadFileSync, 'b.txt'));
   });
 
 });

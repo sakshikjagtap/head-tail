@@ -21,7 +21,7 @@ const validateArgs = (args) => {
   }
 };
 
-const headMain = (readFile, args) => {
+const headMain = (readFile, ...args) => {
   validateArgs(args);
   const { limit, option, files: [file] } = parseArgs(args);
   let content;

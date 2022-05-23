@@ -9,6 +9,7 @@
 - [ ] Consider change contract of parseArgs
 
 **Done :**
+- [x] Change contract of headMain
 - [x] Throw an error when file is not present
 - [x] Validate flags
 - [x] Throw an error if both switches present
