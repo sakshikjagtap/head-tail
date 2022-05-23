@@ -16,7 +16,7 @@ const headMain = (readFile, ...args) => {
   try {
     content = readFile(file, 'utf8');
   } catch (error) {
-    throw 'head: a.txt: No such file or directory';
+    throw `head: ${file}: No such file or directory`;
   }
   return head(content, { limit, option });
 };

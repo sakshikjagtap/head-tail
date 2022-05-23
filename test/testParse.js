@@ -18,8 +18,11 @@ describe('getValue', () => {
     assert.strictEqual(getValue('1'), 1);
   });
 
-  it('should throw an error if valuse is invalid', () => {
+  it('should throw an error if value is invalid', () => {
     assert.throws(() => getValue('b'));
+  });
+  it('should throw an error if value is zero', () => {
+    assert.throws(() => getValue('0'));
   });
 });
 
