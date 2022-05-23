@@ -29,7 +29,8 @@ const getValue = (value) => {
 };
 
 const structureArgs = (arg) => {
-  return isFinite(+arg[1]) ? ['-n', arg[1]] : [arg.slice(0, 2), arg.slice(2)];
+  return isFinite(arg.slice(1)) ? ['-n', arg.slice(1)] : [arg.slice(0, 2)
+    , arg.slice(2)];
 };
 
 const restructureArgs = (args) => {
@@ -72,3 +73,4 @@ exports.getValue = getValue;
 exports.restructureArgs = restructureArgs;
 exports.areBothFlagPresent = areBothFlagPresent;
 exports.throwErrorIfBothPresent = throwErrorIfBothPresent;
+exports.structureArgs = structureArgs;

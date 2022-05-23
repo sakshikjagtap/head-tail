@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { parseArgs, getFlag, getValue, restructureArgs, areBothFlagPresent, throwErrorIfBothPresent } = require('../src/parseArgs.js');
+const { parseArgs, getFlag, getValue, restructureArgs, areBothFlagPresent, throwErrorIfBothPresent, structureArgs } = require('../src/parseArgs.js');
 
 describe('getFlag', () => {
   it('should return a flag if arg is -n', () => {
@@ -70,6 +70,18 @@ describe('restrutureArgs', () => {
     assert.deepStrictEqual(restructureArgs(['-n', '1', 'abc.txt']), ['-n', '1', 'abc.txt']);
     assert.deepStrictEqual(restructureArgs(['-1', 'abc.txt']), ['-n', '1', 'abc.txt']);
     assert.deepStrictEqual(restructureArgs(['-n1', 'abc.txt']), ['-n', '1', 'abc.txt']);
+  });
+});
+
+describe('structureArgs', () => {
+  it('Should structure argument "-n" in array', () => {
+    assert.deepStrictEqual(structureArgs('-n'), ['-n', '']);
+  });
+  it('Should structure argument "-n1" in array', () => {
+    assert.deepStrictEqual(structureArgs('-n1'), ['-n', '1']);
+  });
+  it('Should structure argument "-1" in array', () => {
+    assert.deepStrictEqual(structureArgs('-1'), ['-n', '1']);
   });
 });
 
