@@ -1,4 +1,5 @@
-const isFlag = (arg) => /^-./.test(arg);
+const isFlag = (arg) => arg.startsWith('-');
+
 
 const getFlag = (arg) => {
   const keys = { '-n': 'count', '-c': 'bytes' };
@@ -14,7 +15,7 @@ const validateArgs = (args) => {
     throw 'head: cant combine line and byte counts';
   }
 
-  if (/-[^nc\d]/.test(args)) {
+  if (/-[^nc\d]/.test(args + '')) {
     const usage = 'usage: head[-n lines | -c bytes][file ...]';
     throw 'head: illegal option -- v\n' + usage;
   }

@@ -9,6 +9,7 @@
 - [ ] Consider change contract of parseArgs
 
 **Done :**
+- [x] Remove  regular expression from isFlag
 - [x] Move validate flags in parseFlags
 - [x] Change contract of headMain
 - [x] Throw an error when file is not present
