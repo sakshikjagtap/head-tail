@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { head, contentUptoLimit, headMain, validateArgs } = require('../src/headLib.js');
+const { head, contentUptoLimit, headMain } = require('../src/headLib.js');
 
 describe('linesUptoCount', () => {
   it('Should return array of lines of specified length', () => {
@@ -43,17 +43,6 @@ describe('head', () => {
       'bye\nh');
   });
 
-});
-
-describe('validateArgs', () => {
-  it('should give error if both flags present', () => {
-    assert.throws(() => validateArgs(['-n', '3', '-c']));
-  });
-
-  it('should give error if flag is invalid', () => {
-    assert.throws(() => validateArgs(['-v']));
-    assert.throws(() => validateArgs(['-s']));
-  });
 });
 
 describe('headMain', () => {
