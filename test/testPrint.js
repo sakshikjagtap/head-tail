@@ -57,3 +57,5 @@ describe('print', () => {
     assert.deepStrictEqual(mockedConsole.content, expContent);
   });
 });
+
+exports.mockConsole = mockConsole;

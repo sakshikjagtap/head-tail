@@ -2,12 +2,12 @@
 - [ ] Refactor `head` function
 - [ ] Parse arguments to object
 - [ ] Make work for multiple file
-- [ ] Test headMain function
  
 **MAY BE**
 - [ ] Consider change contract of parseArgs
 
 **Done :**
+- [x] Test headMain function
 - [x] Test print function
 - [x] Test ProcessFile function
 - [x] Test read file function 

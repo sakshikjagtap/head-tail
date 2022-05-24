@@ -1,5 +1,7 @@
 const assert = require('assert');
 const { head, contentUptoLimit, headMain, readFile, processFile } = require('../src/headLib.js');
+const { mockConsole } = require('./testPrint.js');
+
 const mock = (filename, content) => {
   return (expectedFile, encoding) => {
     assert.strictEqual(filename, expectedFile);
@@ -85,28 +87,36 @@ describe('processFile', () => {
   });
 });
 
-describe.skip('headMain', () => {
+describe('headMain', () => {
   it('should return lines of given file', () => {
+    const expContent = ['hello'];
+    const mockedConsole = mockConsole(expContent);
     const mockReadFileSync = mock('a.txt', 'hello');
-    assert.strictEqual(headMain(mockReadFileSync, 'a.txt'),
-      'hello');
+    headMain(mockReadFileSync, mockedConsole, '-n', '1', 'a.txt');
+    assert.strictEqual(mockedConsole.index, 1);
   });
 
   it('should return lines of given file with specified switch', () => {
-    const mockReadFileSync = mock('a.txt', 'hello');
-    assert.strictEqual(headMain(mockReadFileSync, '-n', '3', 'a.txt'),
-      'hello');
+    const expContent = ['a\nb\nc'];
+    const mockedConsole = mockConsole(expContent);
+    const mockReadFileSync = mock('a.txt', 'a\nb\nc');
+    headMain(mockReadFileSync, mockedConsole, '-n', '3', 'a.txt');
+    assert.strictEqual(mockedConsole.index, 1);
   });
 
   it('should return lines for "-n1"', () => {
+    const expContent = ['hello'];
+    const mockedConsole = mockConsole(expContent);
     const mockReadFileSync = mock('a.txt', 'hello');
-    assert.strictEqual(headMain(mockReadFileSync, '-n1', 'a.txt'),
-      'hello');
+    headMain(mockReadFileSync, mockedConsole, '-n1', 'a.txt');
+    assert.strictEqual(mockedConsole.index, 1);
   });
 
   it('Throw an error when file is not present', () => {
     const mockReadFileSync = mock('a.txt', 'hello');
-    assert.throws(() => headMain(mockReadFileSync, 'b.txt'));
+    const expContent = ['head: a.txt: No such file or directory\n'];
+    const mockedConsole = mockConsole(expContent);
+    assert.throws(() => headMain(mockReadFileSync, mockedConsole, '-n1', 'b.txt'));
+    assert.strictEqual(mockedConsole.index, 0);
   });
-
 });
