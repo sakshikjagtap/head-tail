@@ -6,6 +6,7 @@
 - [ ] Consider change contract of parseArgs
 
 **Done :**
+- [x] Establish contract for tail
 - [x] Make work for multiple file
 - [x] Test headMain function
 - [x] Test print function
