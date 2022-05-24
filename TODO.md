@@ -1,5 +1,4 @@
 **TODO :**
-- [ ] Make tail work for file content
 - [ ] Make tail file work
 - [ ] Make tail -n work for content
 - [ ] Make tail -c work for content
@@ -10,6 +9,7 @@
 - [ ] Consider change contract of parseArgs
 
 **Done :**
+- [x] Make tail work for file content
 - [x] Make tail work for single line 
 - [x] Make tentitive plan for tail
 - [x] Establish contract for tail
