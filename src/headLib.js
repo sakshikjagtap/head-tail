@@ -10,17 +10,48 @@ const head = (content, { limit, option }) => {
   return joinLines(firstLines, delimiter);
 };
 
-const headMain = (readFile, ...args) => {
-  const { limit, option, files: [file] } = parseArgs(args);
-  let content;
+const readFile = (readFileSync, fileName) => {
   try {
-    content = readFile(file, 'utf8');
+    return readFileSync(fileName, 'utf8');
   } catch (error) {
-    throw `head: ${file}: No such file or directory`;
+    throw { message: `head: ${fileName}: No such file or directory` };
   }
-  return head(content, { limit, option });
+};
+
+const print = (console, resultOfFiles) => {
+  if (resultOfFiles.length === 1) {
+    console.log(resultOfFiles[0].content);
+  }
+
+  for (let index = 0; index < resultOfFiles.length; index++) {
+    const file = resultOfFiles[index];
+    if (resultOfFiles[index].status === true) {
+      console.log('\n==>', file.name, '<==\n', file.content);
+    }
+    console.error(file.content);
+  }
+};
+
+const processFile = (readFileSync, file, limit, option) => {
+  try {
+    const fileContent = readFile(readFileSync, file);
+    return {
+      name: file, content: head(fileContent, { limit, option }),
+      status: true
+    };
+  } catch (error) {
+    return { name: file, content: error, stauts: false };
+  }
+};
+
+const headMain = (readFileSync, console, ...args) => {
+  const { limit, option, files } = parseArgs(args);
+  const result = files.map(file => processFile(readFileSync, file, limit,
+    option));
+  print(console, result);
 };
 
 exports.head = head;
 exports.contentUptoLimit = contentUptoLimit;
 exports.headMain = headMain;
+exports.readFile = readFile;
