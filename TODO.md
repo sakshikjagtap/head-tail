@@ -1,12 +1,12 @@
 **TODO :**
 - [ ] Refactor `head` function
 - [ ] Parse arguments to object
-- [ ] Make work for multiple file
  
 **MAY BE**
 - [ ] Consider change contract of parseArgs
 
 **Done :**
+- [x] Make work for multiple file
 - [x] Test headMain function
 - [x] Test print function
 - [x] Test ProcessFile function

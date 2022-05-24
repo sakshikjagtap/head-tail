@@ -3,7 +3,7 @@ const { parseArgs, getFlag, getValue, restructureArgs, areBothFlagPresent, throw
 
 describe('getFlag', () => {
   it('should return a flag if arg is -n', () => {
-    assert.strictEqual(getFlag('-n'), 'count');
+    assert.strictEqual(getFlag('-n'), 'lines');
   });
   it('should return a flag if arg is -c', () => {
     assert.strictEqual(getFlag('-c'), 'bytes');
@@ -31,31 +31,31 @@ describe('getValue', () => {
 describe('parseArgs', () => {
   it('should return object of argument', () => {
     assert.deepStrictEqual(parseArgs(['-n', '3', './a.txt']), {
-      option: 'count', limit: 3, files: ['./a.txt']
+      option: 'lines', limit: 3, files: ['./a.txt']
     });
   });
 
   it('should return object of argument with default values', () => {
     assert.deepStrictEqual(parseArgs(['./a.txt']), {
-      option: 'count', limit: 10, files: ['./a.txt']
+      option: 'lines', limit: 10, files: ['./a.txt']
     });
   });
 
   it('should return object of arguments if same flag is multiple times ', () => {
     assert.deepStrictEqual(parseArgs(['-n', '2', '-n', '3', './a.txt']), {
-      option: 'count', limit: 3, files: ['./a.txt']
+      option: 'lines', limit: 3, files: ['./a.txt']
     });
   });
 
   it('should return object of arguments if no space between option and value', () => {
     assert.deepStrictEqual(parseArgs(['-n1', './a.txt']), {
-      option: 'count', limit: 1, files: ['./a.txt']
+      option: 'lines', limit: 1, files: ['./a.txt']
     });
   });
 
   it('should return object of arguments only -1 is specify ', () => {
     assert.deepStrictEqual(parseArgs(['-1', './a.txt']), {
-      option: 'count', limit: 1, files: ['./a.txt']
+      option: 'lines', limit: 1, files: ['./a.txt']
     });
   });
 
@@ -81,7 +81,7 @@ describe('structureArgs', () => {
     assert.deepStrictEqual(structureArgs('-n1'), ['-n', '1']);
   });
   it('Should structure argument "-1" in array', () => {
-    assert.deepStrictEqual(structureArgs('-1'), ['-n', '1']);
+    assert.deepStrictEqual(structureArgs('-n1'), ['-n', '1']);
   });
 });
 

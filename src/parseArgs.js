@@ -9,7 +9,7 @@ const getFlag = (arg) => {
   if (!isValidFlag(arg)) {
     throw illegalOption(arg[1]);
   }
-  const keys = { '-n': 'count', '-c': 'bytes' };
+  const keys = { '-n': 'lines', '-c': 'bytes' };
   return keys[arg];
 };
 
@@ -44,7 +44,7 @@ const throwErrorIfBothPresent = (args) => {
 const parseArgs = (args) => {
   const structuredArgs = restructureArgs(args);
   throwErrorIfBothPresent(structuredArgs);
-  const parsedArgs = { option: 'count', limit: 10, files: [] };
+  const parsedArgs = { option: 'lines', limit: 10, files: [] };
   let index = 0;
   while (isFlag(structuredArgs[index])) {
     parsedArgs.option = getFlag(structuredArgs[index]);

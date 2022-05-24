@@ -1,10 +1,11 @@
 const { splitLines, joinLines } = require('./stringUtils.js');
 const { parseArgs } = require('./parseArgs.js');
+const { fileNotFound } = require('./errors.js');
 
 const contentUptoLimit = (lines, limit) => lines.slice(0, limit);
 
 const head = (content, { limit, option }) => {
-  const delimiter = option === 'count' ? '\n' : '';
+  const delimiter = option === 'lines' ? '\n' : '';
   const lines = splitLines(content, delimiter);
   const firstLines = contentUptoLimit(lines, limit);
   return joinLines(firstLines, delimiter);
@@ -14,23 +15,28 @@ const readFile = (readFileSync, fileName) => {
   try {
     return readFileSync(fileName, 'utf8');
   } catch (error) {
-    throw { message: `head: ${fileName}: No such file or directory` };
+    throw fileNotFound(fileName);
   }
 };
 
-const print = (console, resultOfFiles) => {
-  if (resultOfFiles.length === 1) {
-    console.log(resultOfFiles[0].content);
+const isSingleFile = headOfFiles =>
+  headOfFiles.length === 1 && headOfFiles[0].status;
+
+const print = (console, headOfFiles) => {
+  if (isSingleFile(headOfFiles)) {
+    console.log(headOfFiles[0].content);
     return;
   }
-  for (let index = 0; index < resultOfFiles.length; index++) {
-    const file = resultOfFiles[index];
+
+  let separator = '';
+  headOfFiles.forEach(file => {
     if (file.status === true) {
-      console.log('==>' + file.name + '<==\n' + file.content + '\n');
+      console.log(`${separator}==>${file.name}<==\n${file.content}`);
     } else {
-      console.error(file.content.message + '\n');
+      console.error(`${file.content.message}`);
     }
-  }
+    separator = '\n';
+  });
 };
 
 const processFile = (readFileSync, file, limit, option) => {

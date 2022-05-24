@@ -5,7 +5,7 @@ const mockConsole = function (expectedContent) {
   const callCount = { index: 0, content: [] };
   const log = function (arg) {
     assert.ok(this.index < expectedContent.length);
-    assert.deepStrictEqual(arg, expectedContent[this.index]);
+    assert.strictEqual(arg, expectedContent[this.index]);
     callCount.content.push(arg);
     this.index++;
   };
@@ -33,7 +33,7 @@ describe('print', () => {
   });
 
   it('Should print two line', () => {
-    const expContent = ['==>a.txt<==\nhello\n', '==>b.txt<==\nhii\n'];
+    const expContent = ['==>a.txt<==\nhello', '\n==>b.txt<==\nhii'];
     const result = [{ name: 'a.txt', content: 'hello', status: true },
     { name: 'b.txt', content: 'hii', status: true }];
     const mockedConsole = mockConsole(expContent);
@@ -43,8 +43,8 @@ describe('print', () => {
   });
 
   it('Should one file is existd another file is not existed ', () => {
-    const expContent = ['==>a.txt<==\nhello\n',
-      'head: a.txt: No such file or directory\n'];
+    const expContent = ['==>a.txt<==\nhello',
+      'head: a.txt: No such file or directory'];
     const result = [{ name: 'a.txt', content: 'hello', status: true },
     {
       name: 'b.txt',

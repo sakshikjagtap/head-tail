@@ -31,17 +31,17 @@ describe('head', () => {
 
   it('Should return 10 lines when content is more than 10 lines', () => {
     assert.strictEqual(head('a\nb\nc\nd\ne\nf\ng\nh\ni\nj\nk', {
-      option: 'count',
+      option: 'lines',
       limit: 10
     }
     ), 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj');
   });
 
   it('Should return only specified number of lines', () => {
-    assert.strictEqual(head('a\nb\nc\nd\ne', { option: 'count', limit: 2 }),
+    assert.strictEqual(head('a\nb\nc\nd\ne', { option: 'lines', limit: 2 }),
       'a\nb');
     assert.strictEqual(head('a\nb\nc\nd\ne\nf\ng\nh\ni\nj\nk\n', {
-      option: 'count',
+      option: 'lines',
       limit: 11
     }), 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj\nk');
   });
@@ -71,14 +71,14 @@ describe('processFile', () => {
   it('should return first 1 line of specified file', () => {
     const mockReadFile = mock('abc.txt', 'hello');
     assert.deepStrictEqual(processFile(
-      mockReadFile, 'abc.txt', '1', 'count'),
+      mockReadFile, 'abc.txt', '1', 'lines'),
       { name: 'abc.txt', content: 'hello', status: true });
   });
 
   it('should return error if file not found', () => {
     const mockReadFile = mock('abc.txt', 'hello');
     assert.deepStrictEqual(processFile(
-      mockReadFile, 'ab.txt', '1', 'count'),
+      mockReadFile, 'ab.txt', '1', 'lines'),
       {
         name: 'ab.txt',
         content: { message: 'head: ab.txt: No such file or directory' },

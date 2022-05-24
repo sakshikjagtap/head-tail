@@ -13,6 +13,11 @@ const combineLinesAndBytesError = () => {
   };
 };
 
+const fileNotFound = (fileName) => {
+  return { message: `head: ${fileName}: No such file or directory` };
+};
+
 exports.illegalOption = illegalOption;
 exports.illegalLineCount = illegalLineCount;
 exports.combineLinesAndBytesError = combineLinesAndBytesError;
+exports.fileNotFound = fileNotFound;
