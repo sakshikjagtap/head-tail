@@ -1,4 +1,9 @@
 **TODO :**
+- [ ] Make tail work for single line 
+- [ ] Make tail work for file content
+- [ ] Make tail file work
+- [ ] Make tail -n work for content
+- [ ] Make tail -c work for content
 - [ ] Refactor `head` function
 - [ ] Parse arguments to object
  
@@ -6,6 +11,7 @@
 - [ ] Consider change contract of parseArgs
 
 **Done :**
+- [x] Make tentitive plan for tail
 - [x] Establish contract for tail
 - [x] Make work for multiple file
 - [x] Test headMain function
