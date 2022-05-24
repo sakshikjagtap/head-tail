@@ -77,19 +77,15 @@ describe('processFile', () => {
     const mockReadFile = mock('abc.txt', 'hello');
     assert.deepStrictEqual(processFile(
       mockReadFile, 'ab.txt', '1', 'count'),
-      { name: 'ab.txt', content: `head: ab.txt: No such file or directory`, status: false });
+      {
+        name: 'ab.txt',
+        content: { message: 'head: ab.txt: No such file or directory' },
+        status: false
+      });
   });
 });
 
 describe.skip('headMain', () => {
-  // const mock = (filename, content) => {
-  //   return (expectedFile, encoding) => {
-  //     assert.strictEqual(filename, expectedFile);
-  //     assert.strictEqual(encoding, 'utf8');
-  //     return content;
-  //   };
-  // };
-  // ,
   it('should return lines of given file', () => {
     const mockReadFileSync = mock('a.txt', 'hello');
     assert.strictEqual(headMain(mockReadFileSync, 'a.txt'),

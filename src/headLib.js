@@ -14,21 +14,22 @@ const readFile = (readFileSync, fileName) => {
   try {
     return readFileSync(fileName, 'utf8');
   } catch (error) {
-    throw `head: ${fileName}: No such file or directory`;
+    throw { message: `head: ${fileName}: No such file or directory` };
   }
 };
 
 const print = (console, resultOfFiles) => {
   if (resultOfFiles.length === 1) {
     console.log(resultOfFiles[0].content);
+    return;
   }
-
   for (let index = 0; index < resultOfFiles.length; index++) {
     const file = resultOfFiles[index];
-    if (resultOfFiles[index].status === true) {
-      console.log('\n==>', file.name, '<==\n', file.content);
+    if (file.status === true) {
+      console.log('==>' + file.name + '<==\n' + file.content + '\n');
+    } else {
+      console.error(file.content.message + '\n');
     }
-    console.error(file.content);
   }
 };
 
@@ -56,3 +57,4 @@ exports.contentUptoLimit = contentUptoLimit;
 exports.headMain = headMain;
 exports.readFile = readFile;
 exports.processFile = processFile;
+exports.print = print;
