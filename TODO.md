@@ -2,7 +2,6 @@
 - [ ] Refactor `head` function
 - [ ] Parse arguments to object
 - [ ] Make work for multiple file
-- [ ] Test ProcessFile function
 - [ ] Test print function
 - [ ] Test headMain function
  
@@ -10,6 +9,7 @@
 - [ ] Consider change contract of parseArgs
 
 **Done :**
+- [x] Test ProcessFile function
 - [x] Test read file function 
 - [x] Move error functions to new file
 - [x] Change logic of structureArgs

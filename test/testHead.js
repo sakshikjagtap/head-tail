@@ -1,5 +1,12 @@
 const assert = require('assert');
-const { head, contentUptoLimit, headMain, readFile } = require('../src/headLib.js');
+const { head, contentUptoLimit, headMain, readFile, processFile } = require('../src/headLib.js');
+const mock = (filename, content) => {
+  return (expectedFile, encoding) => {
+    assert.strictEqual(filename, expectedFile);
+    assert.strictEqual(encoding, 'utf8');
+    return content;
+  };
+};
 
 describe('linesUptoCount', () => {
   it('Should return array of lines of specified length', () => {
@@ -46,13 +53,6 @@ describe('head', () => {
 });
 
 describe('readFile', () => {
-  const mock = (filename, content) => {
-    return (expectedFile, encoding) => {
-      assert.strictEqual(filename, expectedFile);
-      assert.strictEqual(encoding, 'utf8');
-      return content;
-    };
-  };
   it('should read a file and return content', () => {
     const mockReadFile = mock('abc.txt', 'hello');
     assert.strictEqual(readFile(mockReadFile, 'abc.txt'), 'hello');
@@ -60,9 +60,24 @@ describe('readFile', () => {
 
   it('should read a file and return content', () => {
     const mockReadFile = mock('a.txt', 'hello');
-    assert.throws(() => readFile(mockReadFile, 'abc.txt'), {
-      message: 'head: abc.txt: No such file or directory'
-    });
+    assert.throws(() => readFile(mockReadFile, 'abc.txt'));
+  });
+});
+
+describe('processFile', () => {
+
+  it('should return first 1 line of specified file', () => {
+    const mockReadFile = mock('abc.txt', 'hello');
+    assert.deepStrictEqual(processFile(
+      mockReadFile, 'abc.txt', '1', 'count'),
+      { name: 'abc.txt', content: 'hello', status: true });
+  });
+
+  it('should return error if file not found', () => {
+    const mockReadFile = mock('abc.txt', 'hello');
+    assert.deepStrictEqual(processFile(
+      mockReadFile, 'ab.txt', '1', 'count'),
+      { name: 'ab.txt', content: `head: ab.txt: No such file or directory`, status: false });
   });
 });
 

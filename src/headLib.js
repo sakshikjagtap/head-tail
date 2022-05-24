@@ -14,7 +14,7 @@ const readFile = (readFileSync, fileName) => {
   try {
     return readFileSync(fileName, 'utf8');
   } catch (error) {
-    throw { message: `head: ${fileName}: No such file or directory` };
+    throw `head: ${fileName}: No such file or directory`;
   }
 };
 
@@ -40,7 +40,7 @@ const processFile = (readFileSync, file, limit, option) => {
       status: true
     };
   } catch (error) {
-    return { name: file, content: error, stauts: false };
+    return { name: file, content: error, status: false };
   }
 };
 
@@ -55,3 +55,4 @@ exports.head = head;
 exports.contentUptoLimit = contentUptoLimit;
 exports.headMain = headMain;
 exports.readFile = readFile;
+exports.processFile = processFile;
