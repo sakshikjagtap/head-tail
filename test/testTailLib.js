@@ -1,7 +1,7 @@
 const assert = require('assert');
-const { tail } = require('../src/tailLib.js');
+const { tail, lastLines, lastCharacters } = require('../src/tailLib.js');
 
-describe.only('tail', () => {
+describe('tail', () => {
   it('should return single line', () => {
     assert.strictEqual(tail('hello'), 'hello');
     assert.strictEqual(tail('bye'), 'bye');
@@ -20,3 +20,18 @@ describe.only('tail', () => {
     assert.strictEqual(tail('hello', 'bytes', 2), 'lo');
   });
 });
+
+describe('lastLines', () => {
+  it('should return last specified lines of file', () => {
+    assert.strictEqual(lastLines('a\nb\nc\nd\ne\nf\ng', 3), 'e\nf\ng');
+    assert.strictEqual(lastLines('a\nb\nc\nd\ne\nf\ng', 0), '');
+  });
+});
+
+describe('lastCharctersf', () => {
+  it('should return last specified number of characters from bottom', () => {
+    assert.strictEqual(lastCharacters('hello', 2), 'lo');
+    assert.strictEqual(lastCharacters('hello', 0), '');
+  });
+});
+

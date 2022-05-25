@@ -1,7 +1,6 @@
 **TODO :**
 - [ ] Make tail file work
-- [ ] Make tail -n file work
-- [ ] Make tail -c file work
+- [ ] Make parse work for head and tail
 - [ ] Refactor `head` function
 - [ ] Parse arguments to object
  
@@ -9,6 +8,9 @@
 - [ ] Consider change contract of parseArgs
 
 **Done :**
+- [x] Make tail -n file work
+- [x] Make tail -c file work
+- [x] Refactor lastLines and lastCharacters function 
 - [x] Make tail -c work for content
 - [x] Make tail -n work for content
 - [x] Make tail work for file content
