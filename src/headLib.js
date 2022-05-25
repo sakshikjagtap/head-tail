@@ -1,5 +1,5 @@
 const { splitLines, joinLines } = require('./stringUtils.js');
-const { parseArgs } = require('./parseArgs.js');
+const { data, parseArgs } = require('./parseArgs.js');
 const { fileNotFound } = require('./errors.js');
 
 const contentUptoLimit = (lines, limit) => lines.slice(0, limit);
@@ -52,7 +52,7 @@ const processFile = (readFileSync, file, limit, option) => {
 };
 
 const headMain = (readFileSync, console, ...args) => {
-  const { limit, option, files } = parseArgs(args);
+  const { value: limit, flag: option, files } = parseArgs(data, args);
   const result = files.map(file => processFile(readFileSync, file, limit,
     option));
   print(console, result);

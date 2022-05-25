@@ -1,7 +1,7 @@
 const assert = require('assert');
-const { parseArgs, getFlag, getValue, restructureArgs, areBothFlagPresent, throwErrorIfBothPresent, structureArgs } = require('../src/parseArgs.js');
+const { parseArgs, getFlag, getValue, restructureArgs, areBothFlagPresent, throwErrorIfBothPresent, structureArgs, data } = require('../src/parseArgs.js');
 
-describe('getFlag', () => {
+describe.skip('getFlag', () => {
   it('should return a flag if arg is -n', () => {
     assert.strictEqual(getFlag('-n'), 'lines');
   });
@@ -30,38 +30,38 @@ describe('getValue', () => {
 
 describe('parseArgs', () => {
   it('should return object of argument', () => {
-    assert.deepStrictEqual(parseArgs(['-n', '3', './a.txt']), {
-      option: 'lines', limit: 3, files: ['./a.txt']
+    assert.deepStrictEqual(parseArgs(data, ['-n', '3', './a.txt']), {
+      flag: 'lines', value: 3, files: ['./a.txt']
     });
   });
 
   it('should return object of argument with default values', () => {
-    assert.deepStrictEqual(parseArgs(['./a.txt']), {
-      option: 'lines', limit: 10, files: ['./a.txt']
+    assert.deepStrictEqual(parseArgs(data, ['./a.txt']), {
+      flag: 'lines', value: 10, files: ['./a.txt']
     });
   });
 
   it('should return object of arguments if same flag is multiple times ', () => {
-    assert.deepStrictEqual(parseArgs(['-n', '2', '-n', '3', './a.txt']), {
-      option: 'lines', limit: 3, files: ['./a.txt']
+    assert.deepStrictEqual(parseArgs(data, ['-n', '2', '-n', '3', './a.txt']), {
+      flag: 'lines', value: 3, files: ['./a.txt']
     });
   });
 
   it('should return object of arguments if no space between option and value', () => {
-    assert.deepStrictEqual(parseArgs(['-n1', './a.txt']), {
-      option: 'lines', limit: 1, files: ['./a.txt']
+    assert.deepStrictEqual(parseArgs(data, ['-n1', './a.txt']), {
+      flag: 'lines', value: 1, files: ['./a.txt']
     });
   });
 
   it('should return object of arguments only -1 is specify ', () => {
-    assert.deepStrictEqual(parseArgs(['-1', './a.txt']), {
-      option: 'lines', limit: 1, files: ['./a.txt']
+    assert.deepStrictEqual(parseArgs(data, ['-1', './a.txt']), {
+      flag: 'lines', value: 1, files: ['./a.txt']
     });
   });
 
   it('should throw an error if options are invalid ', () => {
-    assert.throws(() => parseArgs(['-n', '1', '-c', '3', './a.txt']), { message: 'head: cant combine line and byte counts' });
-    assert.throws(() => parseArgs(['-v', '1', './a.txt'], { message: 'head: illegal option -- v\n usage: head[-n lines | -c bytes][file ...]' }));
+    assert.throws(() => parseArgs(data, ['-n', '1', '-c', '3', './a.txt']), { message: 'head: cant combine line and byte counts' });
+    assert.throws(() => parseArgs([data, '-v', '1', './a.txt'], { message: 'head: illegal option -- v\n usage: head[-n lines | -c bytes][file ...]' }));
   });
 });
 
