@@ -28,7 +28,7 @@ describe('lastLines', () => {
   });
 });
 
-describe('lastCharctersf', () => {
+describe('lastCharacters', () => {
   it('should return last specified number of characters from bottom', () => {
     assert.strictEqual(lastCharacters('hello', 2), 'lo');
     assert.strictEqual(lastCharacters('hello', 0), '');

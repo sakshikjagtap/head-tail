@@ -1,4 +1,3 @@
-/* eslint-disable max-statements */
 const { illegalOption, illegalLineCount, combineLinesAndBytesError } = require
   ('./errors.js');
 
@@ -6,24 +5,16 @@ const data = [{
   flag: '-n',
   value: '10',
   standAlone: false,
+  disallowedFlags: ['-c']
 },
 {
   flag: '-c',
   standAlone: false,
+  disallowedFlags: ['-n']
 }
 ];
 
 const isFlag = (arg) => arg.startsWith('-');
-
-// const isValidFlag = (arg) => ['-n', '-c'].includes(arg);
-
-// const getFlag = (arg) => {
-//   if (!isValidFlag(arg)) {
-//     throw illegalOption(arg[1]);
-//   }
-//   const keys = { '-n': 'lines', '-c': 'bytes' };
-//   return keys[arg];
-// };
 
 const isValidValue = (value) => isFinite(+value) && +value > 0;
 
@@ -45,50 +36,23 @@ const restructureArgs = (args) => {
   return restructuredArgs.filter(arg => arg);
 };
 
-const areBothFlagPresent = (args) => args.includes('-n') && args.includes('-c');
-
-const throwErrorIfBothPresent = (args) => {
-  if (areBothFlagPresent(args)) {
-    throw combineLinesAndBytesError();
-  }
-};
-
 const validateOption = (data, flag) => {
   const option = data.find((arg) => arg.flag === flag);
   if (!option) {
-    throw illegalOption(option.flag);
+    throw illegalOption(flag.slice(1));
   }
   return option;
 };
 
-// const parseArgs = (args) => {
-//   const structuredArgs = restructureArgs(args);
-//   throwErrorIfBothPresent(structuredArgs);
-//   const parsedArgs = { option: 'lines', limit: 10, files: [] };
-//   let index = 0;
-//   while (isFlag(structuredArgs[index])) {
-//     parsedArgs.option = getFlag(structuredArgs[index]);
-//     parsedArgs.limit = getValue(structuredArgs[index + 1]);
-//     index += 2;
-//   }
-//   parsedArgs.files = structuredArgs.slice(index);
-//   return parsedArgs;
-// };
-
-const headValidations = ({ options, files }) => {
-  const keys = { '-n': 'lines', '-c': 'bytes' };
-  throwErrorIfBothPresent(options);
-  const flagsAndValues = { flag: 'lines', value: 10 };
-  for (let index = 0; index < options.length; index = index + 2) {
-    flagsAndValues.flag = keys[options[index]];
-    flagsAndValues.value = options[index + 1];
-  }
-  flagsAndValues.files = files;
-  return flagsAndValues;
+const isDisallowedFlag = (options, disallowedFlags) => {
+  return disallowedFlags.some(disallowedFlag =>
+    options.includes(disallowedFlag));
 };
 
 const parseArgs = (data, args) => {
   const structuredArgs = restructureArgs(args);
+  const keys = { '-n': 'lines', '-c': 'bytes' };
+  const parsedArgs = { flag: 'lines', value: 10 };
   const options = [];
   let index = 0;
   while (isFlag(structuredArgs[index])) {
@@ -97,19 +61,22 @@ const parseArgs = (data, args) => {
       index++;
       option.value = getValue(structuredArgs[index]);
     }
+
+    if (isDisallowedFlag(options, option.disallowedFlags)) {
+      throw combineLinesAndBytesError();
+    }
+
+    parsedArgs.flag = keys[option.flag];
+    parsedArgs.value = option.value;
     options.push(option.flag, option.value);
     index++;
   }
-  const files = structuredArgs.slice(index);
-  return headValidations({ options, files });
+  parsedArgs.files = structuredArgs.slice(index);
+  return parsedArgs;
 };
 
-// exports.parser = parser;
 exports.data = data;
 exports.parseArgs = parseArgs;
-// exports.getFlag = getFlag;
 exports.getValue = getValue;
 exports.restructureArgs = restructureArgs;
-exports.areBothFlagPresent = areBothFlagPresent;
-exports.throwErrorIfBothPresent = throwErrorIfBothPresent;
 exports.structureArgs = structureArgs;

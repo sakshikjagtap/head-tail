@@ -52,7 +52,7 @@ const processFile = (readFileSync, file, limit, option) => {
 };
 
 const headMain = (readFileSync, console, ...args) => {
-  const { value: limit, flag: option, files } = parseArgs(data, args);
+  const { value: limit, flag: option, files } = parseArgs(data, args,);
   const result = files.map(file => processFile(readFileSync, file, limit,
     option));
   print(console, result);

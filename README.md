@@ -1,3 +1,5 @@
+# HEAD
+
 `head [-n lines | -c bytes] [file ...]`
 ```
 head file ->  
@@ -11,7 +13,9 @@ head -c bytes file ->
   
 ```
 
-`tail [-c # | -n #] [file ...]`
+# TAIL
+
+`tail [-c # | -n #][-r][-q] [file ...]`
 
 ```
 tail file ->
@@ -20,7 +24,7 @@ tail file ->
 tail -n lines file -> 
    display specified number of lines from last.
 
-tail -c lines file -> 
+tail -c bytes file -> 
    display specified number of bytes from last.
 
 tail -r file ->

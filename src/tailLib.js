@@ -1,4 +1,5 @@
-const { splitLines, joinLines } = require('../src/stringUtils.js');
+const { splitLines, joinLines } = require('../src/stringUtils');
+const { parseArgs, data } = require('./parseArgs');
 
 const lastLines = (content, value) => {
   const lines = splitLines(content, '\n');
@@ -19,10 +20,10 @@ const tail = (content, flag, value) => {
   return lastCharacters(content, value);
 };
 
-const tailMain = (readFile, flag, value, fileName) => {
-  const parsedArgs = { '-n': 'lines', '-c': 'bytes' };
-  const content = readFile(fileName, 'utf8');
-  return tail(content, parsedArgs[flag], +value);
+const tailMain = (readFile, ...args) => {
+  const { flag, value, files } = parseArgs(data, args);
+  const content = readFile(files[0], 'utf8');
+  return tail(content, flag, value);
 };
 
 exports.tailMain = tailMain;

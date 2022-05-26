@@ -1,15 +1,16 @@
 **TODO :**
 - [ ] Make tail file work
-- [ ] Refactor `head` function
-- [ ] Make parse work for head and tail
 - [ ] Refactor parseArgs function
 - [ ] Parse arguments to object
+- [ ] Format TODO.md
  
 **MAY BE**
 - [ ] Consider change contract of parseArgs
 
 **Done :**
 - [x] Make parseArgs work for head and tail
+- [x] Refactor `head` function
+- [x] Change parseArg function
 - [x] Make tail -n file work
 - [x] Make tail -c file work
 - [x] Refactor lastLines and lastCharacters function 
