@@ -1,5 +1,5 @@
 const { splitLines, joinLines } = require('./stringUtils.js');
-const { data, parseArgs } = require('./parseArgs.js');
+const { parseArgs } = require('./parseArgs.js');
 const { fileNotFound } = require('./errors.js');
 
 const contentUptoLimit = (lines, limit) => lines.slice(0, limit);
@@ -19,21 +19,25 @@ const readFile = (readFileSync, fileName) => {
   }
 };
 
-const isSingleFile = headOfFiles =>
-  headOfFiles.length === 1 && headOfFiles[0].status;
+const multiFileFormatter = ({ name, content }, separator) =>
+  `${separator}==>${name}<==\n${content}`;
 
-const print = (console, headOfFiles) => {
-  if (isSingleFile(headOfFiles)) {
-    console.log(headOfFiles[0].content);
-    return;
-  }
+const identity = ({ content }) => content;
+
+const isSingleFile = (files) => files.length === 1;
+
+const getHeader = (files) =>
+  isSingleFile(files) ? identity : multiFileFormatter;
+
+const print = ({ log, error }, headOfFiles) => {
+  const header = getHeader(headOfFiles);
 
   let separator = '';
-  headOfFiles.forEach(file => {
-    if (file.status === true) {
-      console.log(`${separator}==>${file.name}<==\n${file.content}`);
+  headOfFiles.forEach((file) => {
+    if (file.content) {
+      log(header(file, separator));
     } else {
-      console.error(`${file.content.message}`);
+      error(`${file.error.message}`);
     }
     separator = '\n';
   });
@@ -43,16 +47,15 @@ const processFile = (readFileSync, file, limit, option) => {
   try {
     const fileContent = readFile(readFileSync, file);
     return {
-      name: file, content: head(fileContent, { limit, option }),
-      status: true
+      name: file, content: head(fileContent, { limit, option })
     };
-  } catch (error) {
-    return { name: file, content: error, status: false };
+  } catch (err) {
+    return { name: file, error: err };
   }
 };
 
 const headMain = (readFileSync, console, ...args) => {
-  const { value: limit, flag: option, files } = parseArgs(data, args,);
+  const { limit, option, files } = parseArgs(args,);
   const result = files.map(file => processFile(readFileSync, file, limit,
     option));
   print(console, result);
