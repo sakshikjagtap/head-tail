@@ -13,8 +13,14 @@ const combineLinesAndBytesError = () => {
   };
 };
 
-const fileNotFound = (fileName) => {
-  return { message: `head: ${fileName}: No such file or directory` };
+const fileNotFound = (errorCode, fileName) => {
+  if (errorCode === 'ENOENT') {
+    return { message: `head: ${fileName}: No such file or directory` };
+  } else if (errorCode === 'EISDIR') {
+    return { message: `head: Error reading ${fileName}` };
+  } else if (errorCode === 'EACCES') {
+    return { message: `head: ${fileName}: Permission denied` };
+  }
 };
 
 exports.illegalOption = illegalOption;

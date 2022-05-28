@@ -14,8 +14,8 @@ const head = (content, { limit, option }) => {
 const readFile = (readFileSync, fileName) => {
   try {
     return readFileSync(fileName, 'utf8');
-  } catch (error) {
-    throw fileNotFound(fileName);
+  } catch (err) {
+    throw { errorCode: err.code };
   }
 };
 
@@ -45,12 +45,10 @@ const print = ({ log, error }, headOfFiles) => {
 
 const processFile = (readFileSync, file, limit, option) => {
   try {
-    const fileContent = readFile(readFileSync, file);
-    return {
-      name: file, content: head(fileContent, { limit, option })
-    };
+    const allFileContent = readFile(readFileSync, file);
+    return { name: file, content: head(allFileContent, { limit, option }) };
   } catch (err) {
-    return { name: file, error: err };
+    return { name: file, error: fileNotFound(err.errorCode, file) };
   }
 };
 
@@ -59,6 +57,7 @@ const headMain = (readFileSync, console, ...args) => {
   const result = files.map(file => processFile(readFileSync, file, limit,
     option));
   print(console, result);
+
 };
 
 exports.head = head;
@@ -67,3 +66,6 @@ exports.headMain = headMain;
 exports.readFile = readFile;
 exports.processFile = processFile;
 exports.print = print;
+exports.identity = identity;
+exports.getHeader = getHeader;
+exports.multiFileFormatter = multiFileFormatter;
