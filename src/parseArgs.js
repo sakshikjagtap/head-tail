@@ -1,20 +1,18 @@
-const { illegalOption, illegalLineCount, combineLinesAndBytesError } = require
-  ('./errors.js');
+/* eslint-disable max-statements */
+const { illegalOption, illegalLineCount, combineLinesAndBytesError, usage } =
+  require('./errors.js');
 
-const data = [{
-  flag: '-n',
-  value: '10',
-  standAlone: false,
-  disallowedFlags: ['-c']
-},
-{
-  flag: '-c',
-  standAlone: false,
-  disallowedFlags: ['-n']
-}
-];
+const isFlag = (arg) => arg?.startsWith('-');
 
-const isFlag = (arg) => arg.startsWith('-');
+const isValidFlag = (arg) => ['-n', '-c'].includes(arg);
+
+const getFlag = (arg) => {
+  if (!isValidFlag(arg)) {
+    throw illegalOption(arg[1]);
+  }
+  const keys = { '-n': 'lines', '-c': 'bytes' };
+  return keys[arg];
+};
 
 const isValidValue = (value) => isFinite(+value) && +value > 0;
 
@@ -31,52 +29,43 @@ const structureArgs = (arg) => {
 };
 
 const restructureArgs = (args) => {
-  const restructuredArgs = args.flatMap(arg => isFlag(arg) ?
-    structureArgs(arg) : arg);
-  return restructuredArgs.filter(arg => arg);
+  return args.flatMap(arg => isFlag(arg) ?
+    structureArgs(arg) : arg).filter(arg => arg);
 };
 
-const validateOption = (data, flag) => {
-  const option = data.find((arg) => arg.flag === flag);
-  if (!option) {
-    throw illegalOption(flag.slice(1));
+const areBothFlagPresent = (args) => args.includes('-n') && args.includes('-c');
+
+const validateCombinedFlag = (args) => {
+  if (areBothFlagPresent(args)) {
+    throw combineLinesAndBytesError();
   }
-  return option;
 };
 
-const isDisallowedFlag = (options, disallowedFlags) => {
-  return disallowedFlags.some(disallowedFlag =>
-    options.includes(disallowedFlag));
+const validateFiles = (files) => {
+  if (files.length === 0) {
+    throw usage();
+  }
 };
 
-const parseArgs = (data, args) => {
+const parseArgs = (args) => {
   const structuredArgs = restructureArgs(args);
-  const keys = { '-n': 'lines', '-c': 'bytes' };
-  const parsedArgs = { flag: 'lines', value: 10 };
-  const options = [];
+  const parsedArgs = { option: 'lines', limit: 10 };
   let index = 0;
   while (isFlag(structuredArgs[index])) {
-    const option = validateOption(data, structuredArgs[index]);
-    if (!option.standAlone) {
-      index++;
-      option.value = getValue(structuredArgs[index]);
-    }
-
-    if (isDisallowedFlag(options, option.disallowedFlags)) {
-      throw combineLinesAndBytesError();
-    }
-
-    parsedArgs.flag = keys[option.flag];
-    parsedArgs.value = option.value;
-    options.push(option.flag, option.value);
-    index++;
+    parsedArgs.option = getFlag(structuredArgs[index]);
+    parsedArgs.limit = getValue(structuredArgs[index + 1]);
+    index += 2;
   }
   parsedArgs.files = structuredArgs.slice(index);
+  validateCombinedFlag(structuredArgs);
+  validateFiles(parsedArgs.files);
   return parsedArgs;
 };
 
-exports.data = data;
 exports.parseArgs = parseArgs;
 exports.getValue = getValue;
+exports.getFlag = getFlag;
 exports.restructureArgs = restructureArgs;
+exports.areBothFlagPresent = areBothFlagPresent;
+exports.validateCombinedFlag = validateCombinedFlag;
 exports.structureArgs = structureArgs;

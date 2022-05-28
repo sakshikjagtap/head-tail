@@ -4,7 +4,8 @@
   - [ ] Make tail file work
   - [ ] Refactor parseArgs function
   - [ ] Parse arguments to object
- 
+  - [ ] Make parseArgs for tail
+  
   **MAY BE :**
   - [ ] Consider change contract of parseArgs
 
@@ -30,6 +31,9 @@
   **MAY BE :**
 
   **DONE :**
+  - [x] validateFile function
+  - [x] Handled permission denied error for file
+  - [x] Added getExitCode function
   - [x] Make work for multiple file
   - [x] Refactor `head` function
   - [x] Test headMain function

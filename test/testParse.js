@@ -1,6 +1,20 @@
 const assert = require('assert');
-const { parseArgs, getValue, restructureArgs, structureArgs,
-  data } = require('../src/parseArgs.js');
+const { parseArgs, getFlag, getValue, restructureArgs, areBothFlagPresent,
+  validateCombinedFlag, structureArgs } = require('../src/parseArgs.js');
+
+describe('getFlag', () => {
+  it('should return a flag if arg is -n', () => {
+    assert.strictEqual(getFlag('-n'), 'lines');
+  });
+  it('should return a flag if arg is -c', () => {
+    assert.strictEqual(getFlag('-c'), 'bytes');
+  });
+  it('should throw an error if flag is invalid', () => {
+    assert.throws(() => getFlag('-v'), {
+      message: 'head: illegal option -- v\n usage: head[-n lines | -c bytes][file ...]'
+    });
+  });
+});
 
 describe('getValue', () => {
   it('should return a value of flag if arg is "-n 1"', () => {
@@ -20,50 +34,50 @@ describe('getValue', () => {
 
 describe('parseArgs', () => {
   it('should return object of argument', () => {
-    assert.deepStrictEqual(parseArgs(data, ['-n', '3', './a.txt']), {
-      flag: 'lines', value: 3, files: ['./a.txt']
-    });
+    assert.deepStrictEqual(parseArgs(['-n', '3', './a.txt']),
+      { option: 'lines', limit: 3, files: ['./a.txt'] });
   });
 
   it('should return object of argument with default values', () => {
-    assert.deepStrictEqual(parseArgs(data, ['./a.txt']), {
-      flag: 'lines', value: 10, files: ['./a.txt']
-    });
+    assert.deepStrictEqual(parseArgs(['./a.txt']),
+      { option: 'lines', limit: 10, files: ['./a.txt'] });
   });
 
-  it('should return object of arguments if same flag is multiple times ',
+  it('should return object of args if same flag is multiple times ',
     () => {
-      assert.deepStrictEqual(parseArgs(data,
-        ['-n', '2', '-n', '3', './a.txt']), {
-        flag: 'lines', value: 3, files: ['./a.txt']
-      });
+      assert.deepStrictEqual(parseArgs(['-n', '2', '-n', '3', './a.txt']),
+        {
+          option: 'lines', limit: 3, files: ['./a.txt']
+        });
     });
 
-  it('should return object of arguments if no space between option and value',
+  it('should return object of args if no space between option and value',
     () => {
-      assert.deepStrictEqual(parseArgs(data, ['-n1', './a.txt']), {
-        flag: 'lines', value: 1, files: ['./a.txt']
+      assert.deepStrictEqual(parseArgs(['-n1', './a.txt']), {
+        option: 'lines', limit: 1, files: ['./a.txt']
       });
     });
 
   it('should return object of arguments only -1 is specify ', () => {
-    assert.deepStrictEqual(parseArgs(data, ['-1', './a.txt']), {
-      flag: 'lines', value: 1, files: ['./a.txt']
+    assert.deepStrictEqual(parseArgs(['-1', './a.txt']), {
+      option: 'lines', limit: 1, files: ['./a.txt']
     });
   });
 
   it('should throw an error if options are invalid ', () => {
-    assert.throws(() => parseArgs(data, ['-n', '1', '-c', '3', './a.txt']),
+    assert.throws(() => parseArgs(['-n', '1', '-c', '3', './a.txt']),
       { message: 'head: cant combine line and byte counts' });
-    assert.throws(() => parseArgs(data, ['-v', '1', './a.txt']),
-      { message: 'head: illegal option -- v\n usage: head[-n lines | -c bytes][file ...]' });
+    assert.throws(() => parseArgs(['-v', '1', './a.txt'],
+      {
+        message: 'head: illegal option -- v\n usage: head[-n lines | -c bytes][file ...]'
+      }));
   });
 });
 
 describe('restrutureArgs', () => {
   it('should restructure arguments', () => {
-    assert.deepStrictEqual(restructureArgs(['-n', '1', 'abc.txt']), ['-n', '1',
-      'abc.txt']);
+    assert.deepStrictEqual(restructureArgs(['-n', '1', 'abc.txt']),
+      ['-n', '1', 'abc.txt']);
     assert.deepStrictEqual(restructureArgs(['-1', 'abc.txt']),
       ['-n', '1', 'abc.txt']);
     assert.deepStrictEqual(restructureArgs(['-n1', 'abc.txt']),
@@ -84,3 +98,18 @@ describe('structureArgs', () => {
     assert.deepStrictEqual(structureArgs('-n1'), ['-n', '1']);
   });
 });
+
+describe('areBothFlagPresent', () => {
+  it('Should return true if both flags are present', () => {
+    assert.strictEqual(areBothFlagPresent(['-n', '1', '-c', '1']), true);
+  });
+});
+
+describe('validateCombinedFlag', () => {
+  it('message', () => {
+    assert.throws(() => validateCombinedFlag(['-n', '1', '-c', 2]), {
+      message: 'head: cant combine line and byte counts'
+    });
+  });
+});
+

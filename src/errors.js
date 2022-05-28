@@ -1,6 +1,9 @@
 const illegalOption = (option) => {
-  const usage = 'usage: head[-n lines | -c bytes][file ...]';
-  return { message: `head: illegal option -- ${option}\n ${usage}` };
+  return { message: `head: illegal option -- ${option}\n ${usage().message}` };
+};
+
+const usage = () => {
+  return { message: 'usage: head[-n lines | -c bytes][file ...]' };
 };
 
 const illegalLineCount = (value) => {
@@ -27,3 +30,4 @@ exports.illegalOption = illegalOption;
 exports.illegalLineCount = illegalLineCount;
 exports.combineLinesAndBytesError = combineLinesAndBytesError;
 exports.readFileError = readFileError;
+exports.usage = usage;

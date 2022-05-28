@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { head, contentUptoLimit, headMain, readFile, processFile } =
+const { head, contentUptoLimit, headMain, readFile, headFile, getExitCode } =
   require('../src/headLib.js');
 const { mockConsole } = require('./testPrint.js');
 
@@ -59,58 +59,59 @@ describe('head', () => {
 describe('readFile', () => {
   it('should read a file and return content', () => {
     const mockReadFile = mock('abc.txt', 'hello', { code: 'ENOENT' });
-    assert.deepStrictEqual(readFile(mockReadFile, 'abc.txt'), 'hello');
+    assert.deepStrictEqual(readFile(mockReadFile, 'abc.txt'),
+      { content: 'hello' });
   });
 
   it('should throw an "ENONT" error code when file is not present', () => {
     const mockReadFile = mock('a.txt', 'hello', { code: 'ENOENT' });
-    const expected = { errorCode: 'ENOENT' };
-    assert.throws(() => readFile(mockReadFile, 'abc.txt'), expected);
+    const expected = { code: 'ENOENT' };
+    assert.deepStrictEqual(readFile(mockReadFile, 'abc.txt'), expected);
   });
 
   it('should throw an "EISDIR" error when file is not present', () => {
     const mockReadFile = mock('a.txt', 'hello', { code: 'EISDIR' });
-    const expected = { errorCode: 'EISDIR' };
-    assert.throws(() => readFile(mockReadFile, 'abc.txt'), expected);
+    const expected = { code: 'EISDIR' };
+    assert.deepStrictEqual(readFile(mockReadFile, 'abc.txt'), expected);
   });
 
   it('should throw an "EACCES" error when file is not present', () => {
     const mockReadFile = mock('a.txt', 'hello', { code: 'EACCES' });
-    const expected = { errorCode: 'EACCES' };
-    assert.throws(() => readFile(mockReadFile, 'abc.txt'), expected);
+    const expected = { code: 'EACCES' };
+    assert.deepStrictEqual(readFile(mockReadFile, 'abc.txt'), expected);
   });
 });
 
-describe('processFile', () => {
+describe('headFile', () => {
   it('should return first 1 line of specified file', () => {
     const mockReadFile = mock('abc.txt', 'hello');
-    assert.deepStrictEqual(processFile(mockReadFile, 'abc.txt', '1', 'lines'),
-      { name: 'abc.txt', content: 'hello' });
+    assert.deepStrictEqual(headFile(mockReadFile, 'abc.txt', '1', 'lines'),
+      { fileName: 'abc.txt', content: 'hello' });
   });
 
   it('should return error if file not found', () => {
     const mockReadFile = mock('abc.txt', 'hello', { code: 'ENOENT' });
-    assert.deepStrictEqual(processFile(mockReadFile, 'ab.txt', '1', 'lines'),
+    assert.deepStrictEqual(headFile(mockReadFile, 'ab.txt', '1', 'lines'),
       {
-        name: 'ab.txt',
+        fileName: 'ab.txt',
         error: { message: 'head: ab.txt: No such file or directory' }
       });
   });
 
   it('should return error if permission denied', () => {
     const mockReadFile = mock('abc.txt', 'hello', { code: 'EACCES' });
-    assert.deepStrictEqual(processFile(mockReadFile, 'ab.txt', '1', 'lines'),
+    assert.deepStrictEqual(headFile(mockReadFile, 'ab.txt', '1', 'lines'),
       {
-        name: 'ab.txt',
+        fileName: 'ab.txt',
         error: { message: 'head: ab.txt: Permission denied' }
       });
   });
 
   it('should return error if directory is present', () => {
     const mockReadFile = mock('abc.txt', 'hello', { code: 'EISDIR' });
-    assert.deepStrictEqual(processFile(mockReadFile, './ab', '1', 'lines'),
+    assert.deepStrictEqual(headFile(mockReadFile, './ab', '1', 'lines'),
       {
-        name: './ab',
+        fileName: './ab',
         error: { message: 'head: Error reading ./ab' }
       });
   });
@@ -148,5 +149,17 @@ describe('headMain', () => {
     assert.throws(
       () => headMain(mockReadFileSync, mockedConsole, '-n1', 'b.txt'));
     assert.strictEqual(mockedConsole.index, 0);
+  });
+});
+
+describe('getExitCode', () => {
+  it('should return exit code 0 when all files are present', () => {
+    const reports = [{ fileName: 'a.txt', content: 'hello' }];
+    assert.strictEqual(getExitCode(reports), 0);
+  });
+
+  it('should return exit code 0 when all files are present', () => {
+    const reports = [{ fileName: 'a.txt', error: 'hello' }];
+    assert.strictEqual(getExitCode(reports), 1);
   });
 });
