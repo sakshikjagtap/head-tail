@@ -13,7 +13,7 @@ const combineLinesAndBytesError = () => {
   };
 };
 
-const fileNotFound = (errorCode, fileName) => {
+const readFileError = (errorCode, fileName) => {
   if (errorCode === 'ENOENT') {
     return { message: `head: ${fileName}: No such file or directory` };
   } else if (errorCode === 'EISDIR') {
@@ -26,4 +26,4 @@ const fileNotFound = (errorCode, fileName) => {
 exports.illegalOption = illegalOption;
 exports.illegalLineCount = illegalLineCount;
 exports.combineLinesAndBytesError = combineLinesAndBytesError;
-exports.fileNotFound = fileNotFound;
+exports.readFileError = readFileError;

@@ -1,6 +1,6 @@
 const { splitLines, joinLines } = require('./stringUtils.js');
 const { parseArgs } = require('./parseArgs.js');
-const { fileNotFound } = require('./errors.js');
+const { readFileError } = require('./errors.js');
 
 const contentUptoLimit = (lines, limit) => lines.slice(0, limit);
 
@@ -13,21 +13,21 @@ const head = (content, { limit, option }) => {
 
 const readFile = (readFileSync, fileName) => {
   try {
-    return readFileSync(fileName, 'utf8');
-  } catch (err) {
-    throw { errorCode: err.code };
+    return { content: readFileSync(fileName, 'utf8') };
+  } catch ({ code }) {
+    return { code };
   }
 };
 
-const multiFileFormatter = ({ name, content }, separator) =>
-  `${separator}==>${name}<==\n${content}`;
+const multiFileFormatter = ({ fileName, content }, separator) =>
+  `${separator}==>${fileName}<==\n${content}`;
 
-const identity = ({ content }) => content;
+const singleFileFormatter = ({ content }) => content;
 
 const isSingleFile = (files) => files.length === 1;
 
 const getHeader = (files) =>
-  isSingleFile(files) ? identity : multiFileFormatter;
+  isSingleFile(files) ? singleFileFormatter : multiFileFormatter;
 
 const print = ({ log, error }, headOfFiles) => {
   const header = getHeader(headOfFiles);
@@ -37,35 +37,41 @@ const print = ({ log, error }, headOfFiles) => {
     if (file.content) {
       log(header(file, separator));
     } else {
-      error(`${file.error.message}`);
+      error(file.error.message);
     }
     separator = '\n';
   });
 };
 
-const processFile = (readFileSync, file, limit, option) => {
-  try {
-    const allFileContent = readFile(readFileSync, file);
-    return { name: file, content: head(allFileContent, { limit, option }) };
-  } catch (err) {
-    return { name: file, error: fileNotFound(err.errorCode, file) };
+const headFile = (readFileSync, fileName, limit, option) => {
+  const fileContent = readFile(readFileSync, fileName);
+
+  if (fileContent.code) {
+    const error = readFileError(fileContent.code, fileName);
+    return { fileName, error };
   }
+  const content = head(fileContent.content, { limit, option });
+  return { fileName, content };
 };
 
-const headMain = (readFileSync, console, ...args) => {
-  const { limit, option, files } = parseArgs(args,);
-  const result = files.map(file => processFile(readFileSync, file, limit,
-    option));
-  print(console, result);
+const getExitCode = (fileReports) =>
+  fileReports.filter((report) => report.error).length;
 
+const headMain = (readFileSync, console, ...args) => {
+  const { limit, option, files } = parseArgs(args);
+  const fileReports = files.map(file => headFile(readFileSync, file, limit,
+    option));
+  print(console, fileReports);
+  return getExitCode(fileReports);
 };
 
 exports.head = head;
 exports.contentUptoLimit = contentUptoLimit;
 exports.headMain = headMain;
 exports.readFile = readFile;
-exports.processFile = processFile;
+exports.headFile = headFile;
 exports.print = print;
-exports.identity = identity;
+exports.singleFileFormatter = singleFileFormatter;
 exports.getHeader = getHeader;
 exports.multiFileFormatter = multiFileFormatter;
+exports.getExitCode = getExitCode;

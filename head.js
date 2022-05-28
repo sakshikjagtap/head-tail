@@ -1,14 +1,15 @@
 const { headMain } = require('./src/headLib');
 const fs = require('fs');
 
-// console.log('usage: head [-n lines | -c bytes] [file ...]');
 const main = function () {
+  const logger = { log: console.log, error: console.error };
+  const args = process.argv.slice(2);
+
   try {
-    headMain(fs.readFileSync,
-      { log: console.log, error: console.error }, ...process.argv.slice(2));
+    process.exitCode = headMain(fs.readFileSync, logger, ...args);
   } catch (error) {
     console.error(error.message);
-    process.exit(2);
+    process.exitCode = 1;
   }
 };
 
